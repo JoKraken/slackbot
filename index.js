@@ -43,8 +43,11 @@ function handleMessage(message, channel) {
     event.eventsAll(message, channel);
   } else if (message.includes(' event create')) {
     console.log("handleMessage: event create")
-    event.eventCreate(message, channel);
-  } else if (message.includes('<@UE743CUJZ>')){
+    event.eventCreateInfo(message, channel);
+  } else if (message.includes(' event ')){
+    console.log("handleMessage: create an event ")
+    eventCreate(message, channel);
+  }else if (message.includes('<@UE743CUJZ>')){
     console.log("help")
     help(message, channel);
   }
@@ -58,6 +61,6 @@ function help(message, channel){
     "... guidlines        (show all guidlines)\n"+
     "... tags              (show all the tags that are in use)\n"+
     "... event all        (show all events)\n"+
-    "... event create   (create how to create an event)\n"
+    "... event create   (information how to create an event)\n"
   );
 }
