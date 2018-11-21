@@ -1,0 +1,11 @@
+{
+  "name": "mobileproject",
+  "version": "1.0.0",
+  "description": "slack bot for events and guidlines",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Johanna Kraken",
+  "license": "MIT"
+}
