@@ -1,6 +1,7 @@
 const slack = require('./src/bot');
 const event = require('./src/event');
 const guidlines = require('./src/guidlines');
+const tag = require('./src/tags');
 
 
 // Start Handler
@@ -36,7 +37,7 @@ function handleMessage(message, channel) {
     guidlines.guidlines(message, channel);
   } else if (message.includes(' tags')) {
     console.log("handleMessage: tags")
-    guidlines.tags(message, channel);
+    tag.getTags(message, channel);
   } else if (message.includes(' event all')) {
     console.log("handleMessage: event all")
     event.eventsAll(message, channel);
@@ -58,8 +59,8 @@ function help(message, channel){
   slack.bot.postMessageToChannel(channel, 
     "@memoria ... #tag\n"+
     "... guidlines        (show all guidlines)\n"+
-    "... tags              (show all the tags that are in use)\n"+
-    "... event all        (show all events)\n"+
+    "... tags               (show all the tags that are in use)\n"+
+    "... event all         (show all events)\n"+
     "... event create   (information how to create an event)\n"
   );
 }

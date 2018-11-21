@@ -12,15 +12,6 @@ exports.guidlines = function(message, channel){
     );
 }
 
-exports.tags = function(message, channel){
-    //console.log("message tags");
-    var tags = getTagsString();
-
-    slack.bot.postMessageToChannel(
-        channel, "All tags: \n"+tags
-    )
-}
-
 function getGuidlinesString(){
     //console.log("getGuidlinesString");
     var temp = "";
@@ -29,21 +20,5 @@ function getGuidlinesString(){
         temp += "\n"+(guidline.id+1)+". "+guidline.name+"\n"+
                 guidline.text;
     });
-    return temp;
-}
-
-function getTagsString(){
-    //console.log("getTagsString");
-    var temp = "";
-
-    data.tags.forEach(tag => {
-        temp += tag.name;
-        if(tag.id < (data.tags.length-2)){
-            temp += ", "
-        }else if(tag.id < (data.tags.length-1)){
-            temp += " & "
-        }
-    });
-
     return temp;
 }

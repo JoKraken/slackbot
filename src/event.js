@@ -1,5 +1,7 @@
 const slack = require('./bot');
 const data = require('./data');
+const interCompo = require('./interactiveComponents');
+const tags = require('./tags');
 
 // var exports = module.exports = {};
 
@@ -29,8 +31,15 @@ exports.eventCreate = function(message, channel){
             channel, "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])");
     }else{
         console.log("Event could be created");
+
+        var tagArray = tags.getTagArray();
+        console.log(tagArray);
         slack.bot.postMessageToChannel(
-            channel, "");
+            channel, "", 
+            interCompo.dropdown(
+                "Event could be created", "Choose a tag", "Pick a tag...", "tag_selection",
+                tagArray
+            ));
     }
     
 }
