@@ -1,12 +1,13 @@
 // var exports = module.exports = {};
 
-exports.dropdown =  function(textFirst, textSeound, textThird, callback_id, options){
+exports.dropdown =  function(textFirst, textSecound, textThird, callback_id, option){
+    console.log("dropdown");
     var string = {
         "text": textFirst,
         "response_type": "in_channel",
         "attachments": [
             {
-                "text": textSeound,
+                "text": textSecound,
                 "color": "#3AA3E3",
                 "attachment_type": "default",
                 "callback_id": callback_id,
@@ -15,12 +16,49 @@ exports.dropdown =  function(textFirst, textSeound, textThird, callback_id, opti
                         "name": "list",
                         "text": textThird,
                         "type": "select",
-                        "options": options
+                        "options": option
                     }
                 ]
             }
         ]
     };
+
+    return string;
+}
+
+exports.confirmButton = function(textFirst, textSecound, callback_id){
+    var string = {
+        "text": textFirst,
+        "attachments": [
+            {
+                "title": textSecound,
+                "callback_id": callback_id,
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
+                    {
+                        "name": "save",
+                        "text": "save",
+                        "type": "button",
+                        "value": "1"
+                    },
+                    {
+                        "name": "delete",
+                        "text": "delete",
+                        "type": "button",
+                        "value": "0"
+                    },
+                    {
+                        "name": "edit",
+                        "text": "edit",
+                        "type": "button",
+                        "value": "3"
+                    }
+                ]
+            }
+        ]
+    };
+    console.log("dropdown end");
 
     return string;
 }

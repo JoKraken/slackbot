@@ -59,7 +59,7 @@ var userEvent = class UserEvent{
 }
 
 var tagArray = [];
-tagArray.push(new Tag(0, "general"));tagArray.push(new Tag(1, "Helsinki"));tagArray.push(new Tag(2, "development"));tagArray.push(new Tag(3, "managment"));tagArray.push(new Tag(4, "Helsafter workinki"));
+tagArray.push(new Tag(0, "general"));tagArray.push(new Tag(1, "Helsinki"));tagArray.push(new Tag(2, "development"));tagArray.push(new Tag(3, "managment"));tagArray.push(new Tag(4, "after work"));
 tagArray.push(new Tag(5,"marketing"));tagArray.push(new Tag(6, "training"));tagArray.push(new Tag(7, "meeting"));tagArray.push();tagArray.push();
 exports.tags = tagArray;
 

@@ -17,7 +17,7 @@ exports.getTagArray = function(){
     var temp = [];
 
     data.tags.forEach(tag => {
-        temp.push({text: tag.name, value: tag.name})
+        temp.push({text: tag.name, value: tag.name});
     });
 
     return temp;

@@ -33,15 +33,64 @@ exports.eventCreate = function(message, channel){
         console.log("Event could be created");
 
         var tagArray = tags.getTagArray();
-        console.log(tagArray);
         slack.bot.postMessageToChannel(
             channel, "", 
             interCompo.dropdown(
-                "Event could be created", "Choose a tag", "Pick a tag...", "tag_selection",
-                tagArray
-            ));
+                "Event could be created", "Choose a tag", "Pick a tag...", "tag_selection",tagArray
+            )
+        );
+        setTimeout(() => {
+            var timeArray = createTimeArray();
+            slack.bot.postMessageToChannel(
+                channel, "", 
+                interCompo.dropdown(
+                    "", "Choose a start time", "Pick a time...", "start_time_selection", timeArray
+                )
+            );
+            slack.bot.postMessageToChannel(
+                channel, "", 
+                interCompo.dropdown(
+                    "", "Choose a end time", "Pick a time...", "end_time_selection", timeArray
+                )
+            );
+            setTimeout(() => {
+                var event = data.event[data.event.length-1];
+                var date = new Date().setDate(event.date.getDate());
+                console.log(date);
+                date = new Date(date);
+                date.setMonth(event.date.getMonth());
+                console.log(date);
+                date.setFullYear(event.date.getFullYear());
+                console.log(date);
+                var dateString = date.getDate()+"."+date.getMonth()+"."+date.getFullYear()
+                slack.bot.postMessageToChannel(
+                    channel, "", 
+                    interCompo.confirmButton(
+                        "", "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_selection"
+                    )
+                );
+            }, 1000);
+        }, 500);
+        
     }
     
+}
+
+function createTimeArray(){
+    console.log("createTimeArray");
+    var timeArray = [];
+    for(var i = 8; i <= 22; i++){
+        for(var a = 0; a <= 1; a++){
+            var string = "";
+            if(a == 0){
+                string = i+":00";
+            } else {
+                string = i+":"+(a*30);
+            }
+            timeArray.push({name: string, value: string});
+        }
+    }
+    return timeArray;
 }
 
 function createEvent(message){
@@ -51,16 +100,19 @@ function createEvent(message){
     var arr = split[1].split(";");
     if(arr.length >= 3){
         newEvent.id = data.event.length;
-        console.log(arr);
         newEvent.title = arr[1];
-        console.log(arr);
         newEvent.description = arr[2];
-        console.log(arr);
-        newEvent.date = new Date(arr[0]);
+
+        newEvent.date = new Date();
+        var date = arr[0].split(".")
+        newEvent.date.setDate(date[0])
+        newEvent.date.setMonth(date[1])
+        newEvent.date.setYear(date[2])
         if(arr.length >= 4){
             newEvent.link = arr[3];
         }
-        console.log(newEvent);
+        data.event.push(newEvent);
+        console.log(data.event);
     }else{
         return false;
     }
