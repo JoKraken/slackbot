@@ -14,10 +14,10 @@ exports.guidlines = function(message, channel){
 
 exports.tags = function(message, channel){
     //console.log("message tags");
-    var string = getTagsString();
-    
+    var tags = getTagsString();
+
     slack.bot.postMessageToChannel(
-        channel, "All tags: \n"+string
+        channel, "All tags: \n"+tags
     )
 }
 

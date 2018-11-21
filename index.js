@@ -31,7 +31,6 @@ slack.bot.on('message', data => {
 
 // Respons to Data
 function handleMessage(message, channel) {
-  console.log("handleMessage: "+message)
   if (message.includes(' guidlines')) {
     console.log("handleMessage: guidlines")
     guidlines.guidlines(message, channel);
@@ -42,11 +41,11 @@ function handleMessage(message, channel) {
     console.log("handleMessage: event all")
     event.eventsAll(message, channel);
   } else if (message.includes(' event create')) {
-    console.log("handleMessage: event create")
+    console.log("handleMessage: event create info")
     event.eventCreateInfo(message, channel);
-  } else if (message.includes(' event ')){
+  } else if (message.includes('; ')){
     console.log("handleMessage: create an event ")
-    eventCreate(message, channel);
+    event.eventCreate(message, channel);
   }else if (message.includes('<@UE743CUJZ>')){
     console.log("help")
     help(message, channel);

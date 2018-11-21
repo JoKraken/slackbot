@@ -24,8 +24,10 @@ var Event = class Event {
         this.end_time = "";
         this.noti_date = new Date();
         this.not_id = 0;
+        this.link = "";
     }
 }
+exports.Event = Event;
 var User = class User {
     constructor(id, slack_user_id, name){
         this.id = id;
@@ -65,6 +67,9 @@ var guidlineArray = [];
 guidlineArray.push(new Guidline(0, "language", "For a better understanding of non-Finnish speakers, the English language should be preferred."));
 guidlineArray.push(new Guidline(1, "tags", "To have a better conection between slack and confuence we decided to use the same tags in both. \nTo see the tags plese use <@UE743CUJZ> tags"));
 exports.guidlines = guidlineArray;
+
+var eventArray = [];
+exports.event = eventArray;
 
 var userArray = [];
 exports.user = userArray;
