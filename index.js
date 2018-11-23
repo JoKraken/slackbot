@@ -57,10 +57,11 @@ function help(message, channel){
   console.log("message help");
 
   slack.bot.postMessageToChannel(channel, 
-    "@memoria ... #tag\n"+
+    "@memoria ...\n"+
     "... guidlines        (show all guidlines)\n"+
-    "... tags               (show all the tags that are in use)\n"+
-    "... event all         (show all events)\n"+
-    "... event create   (information how to create an event)\n"
+    "... tags                (show all the tags that are in use)\n"+
+    "... event ...    \n"+
+    "     ... all [#tag]    (show all events, filter with #tag)\n"+
+    "     ... create        (information how to create an event)\n"
   );
 }
