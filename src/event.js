@@ -55,14 +55,10 @@ exports.eventCreate = function(message, channel){
             );
             setTimeout(() => {
                 var event = data.event[data.event.length-1];
-                var date = new Date().setDate(event.date.getDate());
+                console.log(event.date);
+                var date = new Date(event.date);
                 console.log(date);
-                date = new Date(date);
-                date.setMonth(event.date.getMonth());
-                console.log(date);
-                date.setFullYear(event.date.getFullYear());
-                console.log(date);
-                var dateString = date.getDate()+"."+date.getMonth()+"."+date.getFullYear()
+                var dateString = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear()
                 slack.bot.postMessageToChannel(
                     channel, "", 
                     interCompo.confirmButton(
@@ -105,8 +101,9 @@ function createEvent(message){
 
         newEvent.date = new Date();
         var date = arr[0].split(".")
+        console.log(date);
         newEvent.date.setDate(date[0])
-        newEvent.date.setMonth(date[1])
+        newEvent.date.setMonth(date[1]-1)
         newEvent.date.setYear(date[2])
         if(arr.length >= 4){
             newEvent.link = arr[3];
