@@ -1,5 +1,6 @@
 // var exports = module.exports = {};
 
+//create the dropdown
 exports.dropdown =  function(textFirst, textSecound, textThird, callback_id, option){
     console.log("dropdown");
     var string = {
@@ -26,6 +27,7 @@ exports.dropdown =  function(textFirst, textSecound, textThird, callback_id, opt
     return string;
 }
 
+//create confirm button (save, delete, edit)
 exports.confirmButton = function(textFirst, textSecound, callback_id){
     var string = {
         "text": textFirst,

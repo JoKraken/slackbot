@@ -3,6 +3,7 @@ const data = require('./data');
 
 // var exports = module.exports = {};
 
+//send message with the tags
 exports.getTags = function(message, channel){
     //console.log("message tags");
     var tags = getTagsString();
@@ -12,6 +13,7 @@ exports.getTags = function(message, channel){
     )
 }
 
+//return an array with tags inside
 exports.getTagArray = function(){
     console.log("getTagArray");
     var temp = [];
@@ -23,6 +25,7 @@ exports.getTagArray = function(){
     return temp;
 }
 
+//return the tags as string
 function getTagsString(){
     var temp = "";
 

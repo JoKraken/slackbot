@@ -30,7 +30,7 @@ slack.bot.on('message', data => {
   
 });
 
-// Respons to Data
+// Respons to message
 function handleMessage(message, channel) {
   if (message.includes(' guidlines')) {
     console.log("handleMessage: guidlines")
@@ -53,15 +53,19 @@ function handleMessage(message, channel) {
   }
 }
 
+//helper function (what you can do with the bot)
 function help(message, channel){
   console.log("message help");
 
   slack.bot.postMessageToChannel(channel, 
     "@memoria ...\n"+
-    "... guidlines        (show all guidlines)\n"+
-    "... tags                (show all the tags that are in use)\n"+
+    "... guidlines                 (show all guidlines)\n"+
+    "... tags                         (show all the tags that are in use)\n"+
+    "... event all [#tag]       (show all events, filter with #tag)\n"+
+    "... event create           (information how to create an event)\n"
+    /*
     "... event ...    \n"+
     "     ... all [#tag]    (show all events, filter with #tag)\n"+
-    "     ... create        (information how to create an event)\n"
+    "     ... create        (information how to create an event)\n"*/
   );
 }

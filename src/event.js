@@ -5,12 +5,14 @@ const tags = require('./tags');
 
 // var exports = module.exports = {};
 
+//give out all events
 exports.eventsAll =  function(message, channel){
     console.log("message event all");
 
     slack.bot.postMessageToChannel(channel, "All upcomming events:");
 }
 
+//give out infos to create an event
 exports.eventCreateInfo = function(message, channel){
     console.log("message event create info");
 
@@ -21,6 +23,8 @@ exports.eventCreateInfo = function(message, channel){
         );
 }
 
+//give out the event options if you the format is right 
+//if not give a hint to the format
 exports.eventCreate = function(message, channel){
     console.log("message event create");
 
@@ -55,9 +59,7 @@ exports.eventCreate = function(message, channel){
             );
             setTimeout(() => {
                 var event = data.event[data.event.length-1];
-                console.log(event.date);
                 var date = new Date(event.date);
-                console.log(date);
                 var dateString = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear()
                 slack.bot.postMessageToChannel(
                     channel, "", 
@@ -72,6 +74,7 @@ exports.eventCreate = function(message, channel){
     
 }
 
+//return the time array for dropdown
 function createTimeArray(){
     console.log("createTimeArray");
     var timeArray = [];
@@ -89,8 +92,9 @@ function createTimeArray(){
     return timeArray;
 }
 
+//craete an event
 function createEvent(message){
-    var split = message.split("<@UE743CUJZ> ");
+    var split = message.split("<@UE743CUJZ> event ");
     console.log(split);
     var newEvent = new data.Event();
     var arr = split[1].split(";");
@@ -103,7 +107,7 @@ function createEvent(message){
         var date = arr[0].split(".")
         console.log(date);
         newEvent.date.setDate(date[0])
-        newEvent.date.setMonth(date[1]-1)
+        newEvent.date.setMonth(date[1]-1) //januar:0, februar:1, ...
         newEvent.date.setYear(date[2])
         if(arr.length >= 4){
             newEvent.link = arr[3];
@@ -113,6 +117,5 @@ function createEvent(message){
     }else{
         return false;
     }
-
     return true;
 }

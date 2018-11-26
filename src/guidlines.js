@@ -3,6 +3,7 @@ const data = require('./data');
 
 // var exports = module.exports = {};
 
+//send message with the guidlines
 exports.guidlines = function(message, channel){
     //console.log("message guidlines");
     var guidlines = getGuidlinesString();
@@ -12,6 +13,7 @@ exports.guidlines = function(message, channel){
     );
 }
 
+//return the guidlines as a string
 function getGuidlinesString(){
     //console.log("getGuidlinesString");
     var temp = "";
