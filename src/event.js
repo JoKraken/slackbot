@@ -25,11 +25,47 @@ exports.eventAll = function (channel){
         slack.bot.postMessageToChannel(channel, "No events are saved");
     }else{
         console.log("event");
-        slack.bot.postMessageToChannel(channel, "All upcomming <http://www.google.com|events>:");
+
+        var string = {
+            "text": "All upcomming <http://www.google.com|events>:",
+            "response_type": "in_channel",
+            "attachments":[]
+        }
+        slack.bot.postMessageToChannel(channel, "All upcomming <http://www.google.com|events>:", string);
         setTimeout(() => {
             sendEventInfo(channel);
         }, 500);
     }
+}
+
+//send messages with events infos
+function sendEventInfo(channel){
+    //console.log("sendEventInfo");
+    var length = data.event.length;
+    for(var i = 1; i <= 5; i++){
+        var a = length -i;
+        var notiArray = getNotiArray();
+        if(a >= 0){
+            var dateString = data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
+            slack.bot.postMessageToChannel(channel, "",
+                interCompo.dropdown(
+                    "", dateString+" "+data.event[a].title, "NO", "nofification_art_selection", notiArray
+                )
+            );
+        }
+    }
+}
+
+//return the time ntification for dropdown
+function getNotiArray(){
+    //console.log("getNotiArray");
+    var notiArray = [];
+    
+    data.noti_art.forEach(noti => {
+        notiArray.push({text: noti.name, value: noti.id});
+    });
+    
+    return notiArray;
 }
 
 //give out the event options if you the format is right 
@@ -83,36 +119,6 @@ exports.eventCreate = function(message, channel){
         
     }
     
-}
-
-//send messages with events infos
-function sendEventInfo(channel){
-    //console.log("sendEventInfo");
-    var length = data.event.length;
-    for(var i = 1; i <= 5; i++){
-        var a = length -i;
-        var notiArray = getNotiArray();
-        if(a >= 0){
-            var dateString = data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
-            slack.bot.postMessageToChannel(channel, "",
-                interCompo.dropdown(
-                    "", dateString+" "+data.event[a].title, "NO", "nofification_art_selection", notiArray
-                )
-            );
-        }
-    }
-}
-
-//return the time ntification for dropdown
-function getNotiArray(){
-    //console.log("getNotiArray");
-    var notiArray = [];
-    
-    data.noti_art.forEach(noti => {
-        notiArray.push({text: noti.name, value: noti.id});
-    });
-    
-    return notiArray;
 }
 
 //return the time array for dropdown

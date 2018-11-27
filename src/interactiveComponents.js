@@ -39,12 +39,6 @@ exports.confirmButton = function(textFirst, textSecound, callback_id){
                 "attachment_type": "default",
                 "actions": [
                     {
-                        "name": "save",
-                        "text": "save",
-                        "type": "button",
-                        "value": "1"
-                    },
-                    {
                         "name": "edit",
                         "text": "edit",
                         "type": "button",
