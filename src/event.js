@@ -86,7 +86,7 @@ function createTimeArray(){
             } else {
                 string = i+":"+(a*30);
             }
-            timeArray.push({name: string, value: string});
+            timeArray.push({text: string, value: string});
         }
     }
     return timeArray;
