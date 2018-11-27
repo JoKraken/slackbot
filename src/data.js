@@ -76,9 +76,14 @@ exports.event = eventArray;
 var userArray = [];
 exports.user = userArray;
 
-var notiArray = [];
-notiArray.push(new Notification(0, "morning"));notiArray.push(new Notification(1, "day before"));notiArray.push(new Notification(2, "week before"));
-exports.noti = notiArray;
+var notiArray_art = [];
+notiArray_art.push(new Notification(0, "NO"));notiArray_art.push(new Notification(1, "SLACK"));
+notiArray_art.push(new Notification(2, "EMAIL"));notiArray_art.push(new Notification(3, "BOTH"));
+exports.noti_art = notiArray_art;
+
+var notiArray_time = [];
+notiArray_time.push(new Notification(0, "morning"));notiArray_time.push(new Notification(1, "day before"));notiArray_time.push(new Notification(2, "week before"));
+exports.noti_time = notiArray_time;
 
 var eventTagArray = [];
 exports.eventTag = eventTagArray;

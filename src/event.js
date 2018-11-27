@@ -5,15 +5,8 @@ const tags = require('./tags');
 
 // var exports = module.exports = {};
 
-//give out all events
-exports.eventsAll =  function(message, channel){
-    console.log("message event all");
-
-    slack.bot.postMessageToChannel(channel, "All upcomming events:");
-}
-
 //give out infos to create an event
-exports.eventCreateInfo = function(message, channel){
+exports.eventCreateInfo = function(channel){
     console.log("message event create info");
 
     slack.bot.postMessageToChannel(
@@ -21,6 +14,21 @@ exports.eventCreateInfo = function(message, channel){
         "<@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])\n"+
         "After that you can choose the tags, the start( & end) time and the time of notification."
         );
+}
+
+//give out all events
+exports.eventAll = function (channel){
+    console.log("message event all "+data.event.length);
+
+    if(data.event.length == 0){
+        console.log("no event");
+        slack.bot.postMessageToChannel(channel, "No events are saved");
+    }else{
+        console.log("event");
+        slack.bot.postMessageToChannel(channel, "All upcomming events:");
+
+        sendEventInfo(channel);
+    }
 }
 
 //give out the event options if you the format is right 
@@ -37,6 +45,7 @@ exports.eventCreate = function(message, channel){
         console.log("Event could be created");
 
         var tagArray = tags.getTagArray();
+        //console.log(tagArray);
         slack.bot.postMessageToChannel(
             channel, "", 
             interCompo.dropdown(
@@ -45,6 +54,7 @@ exports.eventCreate = function(message, channel){
         );
         setTimeout(() => {
             var timeArray = createTimeArray();
+            //console.log(timeArray);
             slack.bot.postMessageToChannel(
                 channel, "", 
                 interCompo.dropdown(
@@ -74,11 +84,41 @@ exports.eventCreate = function(message, channel){
     
 }
 
+//send messages with events infos
+function sendEventInfo(channel){
+    console.log("sendEventInfo");
+    var length = data.event.length;
+    for(var i = 1; i <= 5; i++){
+        var a = length -i;
+        var notiArray = getNotiArray();
+        if(a >= 0){
+            var dateString = data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
+            slack.bot.postMessageToChannel(channel, "",
+                interCompo.dropdown(
+                    "", dateString+" "+data.event[a].title, "NO", "nofification_art_selection", notiArray
+                )
+            );
+        }
+    }
+}
+
+//return the time ntification for dropdown
+function getNotiArray(){
+    console.log("getNotiArray");
+    var notiArray = [];
+    
+    data.noti_art.forEach(noti => {
+        notiArray.push({text: noti.name, value: noti.id});
+    });
+    
+    return notiArray;
+}
+
 //return the time array for dropdown
 function createTimeArray(){
     console.log("createTimeArray");
     var timeArray = [];
-    for(var i = 8; i <= 22; i++){
+    for(var i = 9; i <= 18; i++){
         for(var a = 0; a <= 1; a++){
             var string = "";
             if(a == 0){

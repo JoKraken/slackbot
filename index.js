@@ -33,19 +33,19 @@ slack.bot.on('message', data => {
 // Respons to message
 function handleMessage(message, channel) {
   if (message.includes(' guidlines')) {
-    console.log("handleMessage: guidlines")
+    console.log("handleMessage: guidlines");
     guidlines.guidlines(message, channel);
   } else if (message.includes(' tags')) {
-    console.log("handleMessage: tags")
+    console.log("handleMessage: tags");
     tag.getTags(message, channel);
-  } else if (message.includes(' event all')) {
-    console.log("handleMessage: event all")
-    event.eventsAll(message, channel);
-  } else if (message.includes(' event create')) {
-    console.log("handleMessage: event create info")
-    event.eventCreateInfo(message, channel);
-  } else if (message.includes('; ')){
-    console.log("handleMessage: create an event ")
+  }else if (message.includes(' event create')) {
+    console.log("handleMessage: event create info");
+    event.eventCreateInfo(channel);
+  }  else if (message.includes(' event all')) {
+    console.log("handleMessage: event all");
+    event.eventAll(channel);
+  } else if (message.includes(';') && message.includes('<@UE743CUJZ> ')){
+    console.log("handleMessage: create an event ");
     event.eventCreate(message, channel);
   }else if (message.includes('<@UE743CUJZ>')){
     console.log("help")
