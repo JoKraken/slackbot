@@ -25,9 +25,10 @@ exports.eventAll = function (channel){
         slack.bot.postMessageToChannel(channel, "No events are saved");
     }else{
         console.log("event");
-        slack.bot.postMessageToChannel(channel, "All upcomming events:");
-
-        sendEventInfo(channel);
+        slack.bot.postMessageToChannel(channel, "All upcomming <http://www.google.com|events>:");
+        setTimeout(() => {
+            sendEventInfo(channel);
+        }, 500);
     }
 }
 
@@ -55,17 +56,17 @@ exports.eventCreate = function(message, channel){
         setTimeout(() => {
             var timeArray = createTimeArray();
             //console.log(timeArray);
-            slack.bot.postMessageToChannel(
-                channel, "", 
-                interCompo.dropdown(
-                    "", "Choose a start time", "Pick a time...", "start_time_selection", timeArray
-                )
+            var dropdown = interCompo.dropdown(
+                "", "Choose a time", "Pick a start time...", "start_time_selection", timeArray
             );
+            dropdown.attachments[0].actions.push({
+                "name": "list",
+                "text": "Pick a end time...",
+                "type": "select",
+                "options": timeArray
+            });
             slack.bot.postMessageToChannel(
-                channel, "", 
-                interCompo.dropdown(
-                    "", "Choose a end time", "Pick a time...", "end_time_selection", timeArray
-                )
+                channel, "", dropdown
             );
             setTimeout(() => {
                 var event = data.event[data.event.length-1];
@@ -86,7 +87,7 @@ exports.eventCreate = function(message, channel){
 
 //send messages with events infos
 function sendEventInfo(channel){
-    console.log("sendEventInfo");
+    //console.log("sendEventInfo");
     var length = data.event.length;
     for(var i = 1; i <= 5; i++){
         var a = length -i;
@@ -104,7 +105,7 @@ function sendEventInfo(channel){
 
 //return the time ntification for dropdown
 function getNotiArray(){
-    console.log("getNotiArray");
+    //console.log("getNotiArray");
     var notiArray = [];
     
     data.noti_art.forEach(noti => {
@@ -116,9 +117,9 @@ function getNotiArray(){
 
 //return the time array for dropdown
 function createTimeArray(){
-    console.log("createTimeArray");
+    //console.log("createTimeArray");
     var timeArray = [];
-    for(var i = 9; i <= 18; i++){
+    for(var i = 9; i <= 20; i++){
         for(var a = 0; a <= 1; a++){
             var string = "";
             if(a == 0){
