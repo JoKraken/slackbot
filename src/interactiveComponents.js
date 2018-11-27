@@ -1,71 +1,59 @@
 // var exports = module.exports = {};
 
 //create the dropdown
-exports.dropdown =  function(textFirst, textSecound, textThird, callback_id, option){
-    console.log("dropdown");
+exports.dropdownAtta =  function(textSecound, textThird, callback_id, option){
     var string = {
-        "text": textFirst,
-        "response_type": "in_channel",
-        "attachments": [
+        "text": textSecound,
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "callback_id": callback_id,
+        "actions": [
             {
-                "text": textSecound,
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "callback_id": callback_id,
-                "actions": [
-                    {
-                        "name": "list",
-                        "text": textThird,
-                        "type": "select",
-                        "options": option
-                    }
-                ]
+                "name": "list",
+                "text": textThird,
+                "type": "select",
+                "options": option
             }
         ]
     };
 
     return string;
 }
+
+
 
 //create confirm button (save, delete, edit)
-exports.confirmButton = function(textFirst, textSecound, callback_id){
+exports.confirmButtonAtta = function(textFirst, textSecound, callback_id){
     var string = {
-        "text": textFirst,
-        "attachments": [
+        "title": textSecound,
+        "callback_id": callback_id,
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "actions": [
             {
-                "title": textSecound,
-                "callback_id": callback_id,
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "actions": [
-                    {
-                        "name": "edit",
-                        "text": "edit",
-                        "type": "button",
-                        "value": "3"
-                    },
-                    {
-                        "name": "delete",
-                        "text": "delete",
-                        "type": "button",
-                        "style": "danger",
-                        "value": "0",
-                        "confirm": {
-                            "title": "Are you sure?",
-                            "text": "Do you realy like to delete this?",
-                            "ok_text": "Yes",
-                            "dismiss_text": "No"
-                        }
-                    }
-                ]
+                "name": "edit",
+                "text": "edit",
+                "type": "button",
+                "value": "3"
+            },
+            {
+                "name": "delete",
+                "text": "delete",
+                "type": "button",
+                "style": "danger",
+                "value": "0",
+                "confirm": {
+                    "title": "Are you sure?",
+                    "text": "Do you realy like to delete this?",
+                    "ok_text": "Yes",
+                    "dismiss_text": "No"
+                }
             }
         ]
     };
-    console.log("dropdown end");
 
     return string;
 }
-
 
 //button
 /*{

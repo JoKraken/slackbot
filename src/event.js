@@ -31,29 +31,26 @@ exports.eventAll = function (channel){
             "response_type": "in_channel",
             "attachments":[]
         }
+        string.attachments = eventInfoAttachments();
         slack.bot.postMessageToChannel(channel, "All upcomming <http://www.google.com|events>:", string);
-        setTimeout(() => {
-            sendEventInfo(channel);
-        }, 500);
     }
 }
 
 //send messages with events infos
-function sendEventInfo(channel){
-    //console.log("sendEventInfo");
+function eventInfoAttachments(){
+    var array = [];
     var length = data.event.length;
     for(var i = 1; i <= 5; i++){
         var a = length -i;
         var notiArray = getNotiArray();
         if(a >= 0){
             var dateString = data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
-            slack.bot.postMessageToChannel(channel, "",
-                interCompo.dropdown(
-                    "", dateString+" "+data.event[a].title, "NO", "nofification_art_selection", notiArray
-                )
-            );
+            array.push(interCompo.dropdownAtta(
+                dateString+" "+data.event[a].title, "NO", "nofification_art_selection", notiArray
+            ));
         }
     }
+    return array;
 }
 
 //return the time ntification for dropdown
@@ -81,44 +78,52 @@ exports.eventCreate = function(message, channel){
     }else{
         console.log("Event could be created");
 
-        var tagArray = tags.getTagArray();
-        //console.log(tagArray);
-        slack.bot.postMessageToChannel(
-            channel, "", 
-            interCompo.dropdown(
-                "Event could be created", "Choose a tag", "Pick a tag...", "tag_selection",tagArray
-            )
-        );
-        setTimeout(() => {
-            var timeArray = createTimeArray();
-            //console.log(timeArray);
-            var dropdown = interCompo.dropdown(
-                "", "Choose a time", "Pick a start time...", "start_time_selection", timeArray
-            );
-            dropdown.attachments[0].actions.push({
-                "name": "list",
-                "text": "Pick a end time...",
-                "type": "select",
-                "options": timeArray
-            });
-            slack.bot.postMessageToChannel(
-                channel, "", dropdown
-            );
-            setTimeout(() => {
-                var event = data.event[data.event.length-1];
-                var date = new Date(event.date);
-                var dateString = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear()
-                slack.bot.postMessageToChannel(
-                    channel, "", 
-                    interCompo.confirmButton(
-                        "", "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_selection"
-                    )
-                );
-            }, 1000);
-        }, 500);
-        
+        var string = {
+            "text": "All upcomming <http://www.google.com|events>:",
+            "response_type": "in_channel",
+            "attachments":[]
+        }
+        string.attachments = eventCreateAttachments();
+        slack.bot.postMessageToChannel(channel, "Event could be created", string);        
     }
     
+}
+
+//return the tags, start and end time dropdown & the confirm buttons
+function eventCreateAttachments(){
+    var array = [];
+    console.log(array);
+
+    var tagArray = tags.getTagArray();
+    array.push(interCompo.dropdownAtta(
+        "Choose a tag", "Pick a tag...", "tag_selection", tagArray
+    ));
+
+    console.log(array);
+    var timeArray = createTimeArray();
+    //console.log(timeArray);
+    var dropdown = interCompo.dropdownAtta(
+        "Choose a time", "Pick a start time...", "start_time_selection", timeArray
+    );
+    console.log(dropdown);
+    dropdown.actions.push({
+        "name": "list",
+        "text": "Pick a end time...",
+        "type": "select",
+        "options": timeArray
+    });
+    array.push(dropdown);
+    console.log(array);
+
+    var event = data.event[data.event.length-1];
+    var date = new Date(event.date);
+    var dateString = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear()
+    array.push(interCompo.confirmButtonAtta(
+        "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_selection"
+    ));
+    console.log(array);
+
+    return array;
 }
 
 //return the time array for dropdown
