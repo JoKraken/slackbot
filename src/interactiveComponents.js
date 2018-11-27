@@ -45,16 +45,23 @@ exports.confirmButton = function(textFirst, textSecound, callback_id){
                         "value": "1"
                     },
                     {
-                        "name": "delete",
-                        "text": "delete",
-                        "type": "button",
-                        "value": "0"
-                    },
-                    {
                         "name": "edit",
                         "text": "edit",
                         "type": "button",
                         "value": "3"
+                    },
+                    {
+                        "name": "delete",
+                        "text": "delete",
+                        "type": "button",
+                        "style": "danger",
+                        "value": "0",
+                        "confirm": {
+                            "title": "Are you sure?",
+                            "text": "Do you realy like to delete this?",
+                            "ok_text": "Yes",
+                            "dismiss_text": "No"
+                        }
                     }
                 ]
             }
@@ -72,14 +79,14 @@ exports.confirmButton = function(textFirst, textSecound, callback_id){
 "channel": channel,
 "attachments": [
     {
-    "fallback": "Book your flights at https://flights.example.com/book/r123456",
-    "actions": [
-        {
-        "type": "button",
-        "text": "Book flights 🛫",
-        "url": "https://flights.example.com/book/r123456"
-        }
-    ]
+        "fallback": "Book your flights at https://flights.example.com/book/r123456",
+        "actions": [
+            {
+            "type": "button",
+            "text": "Book flights 🛫",
+            "url": "https://flights.example.com/book/r123456"
+            }
+        ]
     }
 ]
 }*/
