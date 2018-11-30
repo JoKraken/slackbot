@@ -6,7 +6,6 @@ exports.UserExist = function(userSlackId){
     console.log("UserExist");
     var temp = false;
     database.user.forEach(user => {
-        console.log(user);
         if(user.slack_user_id == userSlackId) temp = true;
     });
 
@@ -19,7 +18,6 @@ exports.createUser = function(userSlackId){
     console.log("createUser");
     slack.bot.getUsers().always(function(data) {
         data._value.members.forEach(user => {
-            console.log(user.name);
             if(user.id == id){
                 userId = (database.user.length+1);
                 var newUser = new database.User();
@@ -30,6 +28,5 @@ exports.createUser = function(userSlackId){
                 database.user.push(newUser);
             }
         })
-        console.log(database.user);
     });
 }

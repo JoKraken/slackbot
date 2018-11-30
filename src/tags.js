@@ -3,7 +3,7 @@ const data = require('./data');
 
 // var exports = module.exports = {};
 
-//send message with the tags
+//add a tag
 exports.addTags = function(message, channel){
     //console.log("tags add");
     var split = message.split("<@UE743CUJZ> tags add ");
@@ -15,7 +15,7 @@ exports.addTags = function(message, channel){
     )
 }
 
-//send message with the tags
+//delete a tag
 exports.deleteTags = function(message, channel){
     //console.log("tags delete");
     var split = message.split("<@UE743CUJZ> tags delete ");

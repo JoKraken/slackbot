@@ -24,13 +24,11 @@ slack.bot.on('message', res => {
   const temp = res;
   
   slack.bot.getChannelById(res.channel).always(function(res2) {
-    console.log(temp.user)
     const channel = res2._value.name
 
     if(!user.UserExist(temp.user)){
         user.createUser(temp.user);
     }
-    
     handleMessage(temp.text, channel);
   });
 
@@ -38,9 +36,15 @@ slack.bot.on('message', res => {
 
 // Respons to message
 function handleMessage(message, channel) {
-  if (message.includes(' guidlines')) {
+  if (message.includes(' guidlines delete')) {
+    console.log("handleMessage: guidlines delete");
+    guidlines.deleteGuidlines(message, channel);
+  } else if (message.includes(' guidlines add')) {
+    console.log("handleMessage: guidlines add");
+    guidlines.addGuidlines(message, channel);
+  } else if (message.includes(' guidlines')) {
     //console.log("handleMessage: guidlines");
-    guidlines.guidlines(message, channel);
+    guidlines.getGuidlines(message, channel);
   } else if (message.includes(' tags delete')) {
     console.log("handleMessage: tags delete");
     tag.deleteTags(message, channel);
