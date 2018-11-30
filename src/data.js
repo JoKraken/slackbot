@@ -37,6 +37,7 @@ var User = class User {
         this.name = name;
     }
 }
+exports.User = User;
 var Notification = class Notification{
     constructor(id, name){
         this.id = id;

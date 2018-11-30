@@ -7,7 +7,7 @@ const tags = require('./tags');
 
 //give out infos to create an event
 exports.eventCreateInfo = function(channel){
-    console.log("message event create info");
+    //("message event create info");
 
     slack.bot.postMessageToChannel(
         channel, "Create an event: \nTo create an event please use the following format:\n"+
@@ -18,17 +18,17 @@ exports.eventCreateInfo = function(channel){
 
 //give out all events
 exports.eventAll = function (channel){
-    console.log("message event all "+data.event.length);
+    //console.log("message event all "+data.event.length);
 
     if(data.event.length == 0){
-        console.log("no event");
+        //console.log("no event");
         slack.bot.postMessageToChannel(channel, "No events are saved");
     }else{
-        console.log("event");
+        //console.log("event");
 
         var string = {
             "text": "All upcomming <http://www.google.com|events>:",
-            "response_type": "in_channel",
+            "response_type": "ephemeral",
             "attachments":[]
         }
         string.attachments = eventInfoAttachments();
@@ -68,19 +68,18 @@ function getNotiArray(){
 //give out the event options if you the format is right 
 //if not give a hint to the format
 exports.eventCreate = function(message, channel){
-    console.log("message event create");
+    //console.log("message event create");
 
-    console.log(message);
 
     if(!createEvent(message)){
         slack.bot.postMessageToChannel(
             channel, "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])");
     }else{
-        console.log("Event could be created");
+        //console.log("Event could be created");
 
         var string = {
             "text": "All upcomming <http://www.google.com|events>:",
-            "response_type": "in_channel",
+            "response_type": "ephemeral",
             "attachments":[]
         }
         string.attachments = eventCreateAttachments();
@@ -92,20 +91,16 @@ exports.eventCreate = function(message, channel){
 //return the tags, start and end time dropdown & the confirm buttons
 function eventCreateAttachments(){
     var array = [];
-    console.log(array);
 
     var tagArray = tags.getTagArray();
     array.push(interCompo.dropdownAtta(
         "Choose a tag", "Pick a tag...", "tag_selection", tagArray
     ));
 
-    console.log(array);
     var timeArray = createTimeArray();
-    //console.log(timeArray);
     var dropdown = interCompo.dropdownAtta(
         "Choose a time", "Pick a start time...", "start_time_selection", timeArray
     );
-    console.log(dropdown);
     dropdown.actions.push({
         "name": "list",
         "text": "Pick a end time...",
@@ -113,7 +108,6 @@ function eventCreateAttachments(){
         "options": timeArray
     });
     array.push(dropdown);
-    console.log(array);
 
     var event = data.event[data.event.length-1];
     var date = new Date(event.date);
@@ -121,7 +115,7 @@ function eventCreateAttachments(){
     array.push(interCompo.confirmButtonAtta(
         "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_selection"
     ));
-    console.log(array);
+    //console.log(array);
 
     return array;
 }
@@ -130,13 +124,13 @@ function eventCreateAttachments(){
 function createTimeArray(){
     //console.log("createTimeArray");
     var timeArray = [];
-    for(var i = 9; i <= 20; i++){
-        for(var a = 0; a <= 1; a++){
+    for(var i = 8; i <= 20; i++){
+        for(var a = 0; a <= 3; a++){
             var string = "";
             if(a == 0){
                 string = i+":00";
             } else {
-                string = i+":"+(a*30);
+                string = i+":"+(a*15);
             }
             timeArray.push({text: string, value: string});
         }
@@ -147,7 +141,6 @@ function createTimeArray(){
 //craete an event
 function createEvent(message){
     var split = message.split("<@UE743CUJZ> event ");
-    console.log(split);
     var newEvent = new data.Event();
     var arr = split[1].split(";");
     if(arr.length >= 3){
@@ -157,7 +150,6 @@ function createEvent(message){
 
         newEvent.date = new Date();
         var date = arr[0].split(".")
-        console.log(date);
         newEvent.date.setDate(date[0])
         newEvent.date.setMonth(date[1]-1) //januar:0, februar:1, ...
         newEvent.date.setYear(date[2])
@@ -165,7 +157,7 @@ function createEvent(message){
             newEvent.link = arr[3];
         }
         data.event.push(newEvent);
-        console.log(data.event);
+        //console.log(data.event);
     }else{
         return false;
     }

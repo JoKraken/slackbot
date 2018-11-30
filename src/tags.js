@@ -15,7 +15,7 @@ exports.getTags = function(message, channel){
 
 //return an array with tags inside
 exports.getTagArray = function(){
-    console.log("getTagArray");
+    //console.log("getTagArray");
     var temp = [];
 
     data.tags.forEach(tag => {
