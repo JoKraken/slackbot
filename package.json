@@ -7,5 +7,9 @@
     "start": "node index.js"
   },
   "author": "Johanna Kraken",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@slack/interactive-messages": "^1.0.2",
+    "express": "^4.16.4"
+  }
 }

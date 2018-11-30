@@ -2,9 +2,9 @@ const slack = require('./src/bot');
 const event = require('./src/event');
 const guidlines = require('./src/guidlines');
 const tag = require('./src/tags');
-
 const user = require('./src/user');
 const data = require('./src/data');
+const express = require('./src/express');
 
 // Start Handler
 slack.bot.on('start', () => {
