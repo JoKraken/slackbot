@@ -30,6 +30,7 @@ slack.bot.on('message', res => {
     if(!user.UserExist(temp.user)){
         user.createUser(temp.user);
     }
+    
     handleMessage(temp.text, channel);
   });
 
@@ -40,6 +41,12 @@ function handleMessage(message, channel) {
   if (message.includes(' guidlines')) {
     //console.log("handleMessage: guidlines");
     guidlines.guidlines(message, channel);
+  } else if (message.includes(' tags delete')) {
+    console.log("handleMessage: tags delete");
+    tag.deleteTags(message, channel);
+  } else if (message.includes(' tags add')) {
+    console.log("handleMessage: tags add");
+    tag.addTags(message, channel);
   } else if (message.includes(' tags')) {
     //console.log("handleMessage: tags");
     tag.getTags(message, channel);

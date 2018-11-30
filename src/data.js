@@ -9,6 +9,7 @@ var Tag = class Tag {
         this.name = name;
     }
 }
+exports.Tag = Tag;
 var Guidline = class Guidline {
     constructor(id, name, text){
         this.id = id;
@@ -16,6 +17,7 @@ var Guidline = class Guidline {
         this.text = text;
     }
 }
+exports.Guidline = Guidline;
 var Event = class Event {
     constructor(id, title, des, date){
         this.id = id;

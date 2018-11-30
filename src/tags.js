@@ -4,6 +4,36 @@ const data = require('./data');
 // var exports = module.exports = {};
 
 //send message with the tags
+exports.addTags = function(message, channel){
+    //console.log("tags add");
+    var split = message.split("<@UE743CUJZ> tags add ");
+
+    data.tags.push(new data.Tag(data.tags.length, split[1]));
+
+    slack.bot.postMessageToChannel(
+        channel, "The tag "+split[1]+" is added"
+    )
+}
+
+//send message with the tags
+exports.deleteTags = function(message, channel){
+    //console.log("tags delete");
+    var split = message.split("<@UE743CUJZ> tags delete ");
+
+    var temp = 0;
+    data.tags.forEach(tag => {
+        if(tag.name == split[1]){
+            data.tags.splice(temp, 1);
+        }
+        temp++;
+    });
+
+    slack.bot.postMessageToChannel(
+        channel, "The tag "+split[1]+" is deleted."
+    )
+}
+
+//send message with the tags
 exports.getTags = function(message, channel){
     //console.log("message tags");
     var tags = getTagsString();
