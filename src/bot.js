@@ -1,18 +1,11 @@
-
 //crate slack bot
 
-// var exports = module.exports = {};
+const { RTMClient, WebClient } = require('@slack/client');
 
-const SlackBot = require('slackbots');
-//const axios = require('axios');
+// The client is initialized and then started to get an active connection to the platform
+const rtm = new RTMClient(process.env.SLACK_BOTUSER_OAUTH_ACCESS_TOKEN); //getting messages from slack
+const web = new WebClient(process.env.SLACK_BOTUSER_OAUTH_ACCESS_TOKEN); //sending messages to slack
+rtm.start();
 
-process.env.SLACK_SIGNING_SECRET = "xoxb-482822215075-483139436645-45a99gHaHdqJR2YVWfr3kNjx";
-process.env.PORT = 8001;
-
-const bot = new SlackBot({
-  token: process.env.SLACK_SIGNING_SECRET,
-  name: 'memoria'
-});
-
-
-exports.bot = bot;
+exports.web = web;
+exports.bot = rtm;

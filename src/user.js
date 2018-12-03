@@ -3,7 +3,7 @@ const database = require('./data');
 
 //return if user exist
 exports.UserExist = function(userSlackId){
-    console.log("UserExist");
+    //console.log("UserExist");
     var temp = false;
     database.user.forEach(user => {
         if(user.slack_user_id == userSlackId) temp = true;
@@ -14,19 +14,13 @@ exports.UserExist = function(userSlackId){
 
 //create user
 exports.createUser = function(userSlackId){
-    const id = userSlackId;
-    console.log("createUser");
-    slack.bot.getUsers().always(function(data) {
-        data._value.members.forEach(user => {
-            if(user.id == id){
-                userId = (database.user.length+1);
-                var newUser = new database.User();
-                newUser.id = userId;
-                newUser.slack_user_id = id;
-                newUser.name = user.name;
-                console.log(newUser);
-                database.user.push(newUser);
-            }
-        })
-    });
+    //console.log("createUser");
+
+    userId = (database.user.length+1);
+    var newUser = new database.User();
+    newUser.id = userId;
+    newUser.slack_user_id = userSlackId;
+    newUser.name = "";
+    //console.log(newUser);
+    database.user.push(newUser);
 }
