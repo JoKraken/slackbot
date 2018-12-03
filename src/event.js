@@ -6,33 +6,30 @@ const tags = require('./tags');
 // var exports = module.exports = {};
 
 //give out infos to create an event
-exports.eventCreateInfo = function(channel){
+exports.eventCreateInfo = function(channelId, userId){
     //("message event create info");
 
-    slack.bot.postMessageToChannel(
-        channel, "Create an event: \nTo create an event please use the following format:\n"+
+    slack.web.chat.postEphemeral({
+        channel: channelId, user:userId, text:"Create an event: \nTo create an event please use the following format:\n"+
         "<@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])\n"+
         "After that you can choose the tags, the start( & end) time and the time of notification."
-        );
+    });
 }
 
 //give out all events
-exports.eventAll = function (channel){
+exports.eventAll = function (channelId, userId){
     //console.log("message event all "+data.event.length);
 
     if(data.event.length == 0){
         //console.log("no event");
-        slack.bot.postMessageToChannel(channel, "No events are saved");
+        slack.web.chat.postEphemeral({
+            channel: channelId, user:userId, text:"No events are saved"});
     }else{
         //console.log("event");
 
-        var string = {
-            "text": "All upcomming <http://www.google.com|events>:",
-            "response_type": "ephemeral",
-            "attachments":[]
-        }
-        string.attachments = eventInfoAttachments();
-        slack.bot.postMessageToChannel(channel, "All upcomming <http://www.google.com|events>:", string);
+        var attachmentArray = eventInfoAttachments();
+        slack.web.chat.postEphemeral({
+            channel: channelId, user: userId, text: "All upcomming <http://www.google.com|events>:", attachmentArray});
     }
 }
 
@@ -67,23 +64,29 @@ function getNotiArray(){
 
 //give out the event options if you the format is right 
 //if not give a hint to the format
-exports.eventCreate = function(message, channel){
+exports.eventCreate = function(message, channel, userId){
     //console.log("message event create");
 
 
     if(!createEvent(message)){
-        slack.bot.postMessageToChannel(
-            channel, "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])");
+        // slack.bot.postEphemeralToChannel(
+        //     channel, "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])");
+        web.chat.postEphemeral({ 
+            channel: channel, 
+            user: userId,
+            text: "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])" 
+        });
     }else{
         //console.log("Event could be created");
 
-        var string = {
-            "text": "All upcomming <http://www.google.com|events>:",
-            "response_type": "ephemeral",
-            "attachments":[]
-        }
-        string.attachments = eventCreateAttachments();
-        slack.bot.postMessageToChannel(channel, "Event could be created", string);        
+        var attachmentsArray = eventCreateAttachments();
+        //slack.bot.postEphemeralToChannel(channel, "Event could be created", string); 
+        slack.web.chat.postEphemeral({ 
+            channel: channel, 
+            user: userId,
+            text: "Event could be created",
+            attachments: attachmentsArray
+        });       
     }
     
 }
@@ -113,7 +116,7 @@ function eventCreateAttachments(){
     var date = new Date(event.date);
     var dateString = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear()
     array.push(interCompo.confirmButtonAtta(
-        "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_selection"
+        "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_edit_delete_buttons"
     ));
     //console.log(array);
 
@@ -140,7 +143,7 @@ function createTimeArray(){
 
 //craete an event
 function createEvent(message){
-    var split = message.split("<@UE743CUJZ> event ");
+    var split = message.split(" event ");
     var newEvent = new data.Event();
     var arr = split[1].split(";");
     if(arr.length >= 3){

@@ -1,3 +1,4 @@
+require('dotenv/config')
 const slack = require('./src/bot');
 const event = require('./src/event');
 const guidlines = require('./src/guidlines');
@@ -6,81 +7,74 @@ const user = require('./src/user');
 const data = require('./src/data');
 const express = require('./src/express');
 
-// Start Handler
-slack.bot.on('start', () => {
-  console.log("start");
-});
-
-// Error Handler
-slack.bot.on('error', err => console.log(err));
-
-
 // Message Handler
-slack.bot.on('message', res => {
+slack.bot.on('message', (res) => {
   if (res.type !== 'message' || res.bot_id != undefined) {
     return;
   }
   console.log(res);
-  const temp = res;
-  
-  slack.bot.getChannelById(res.channel).always(function(res2) {
-    const channel = res2._value.name
 
-    if(!user.UserExist(temp.user)){
-        user.createUser(temp.user);
-    }
-    handleMessage(temp.text, channel);
-  });
+  if(!user.UserExist(res.user)){
+      user.createUser(res.user);
+  }
+  handleMessage(res.text, res.channel, res.user);
 
 });
 
+slack.bot.on('', (res) => {
+  console.log(res);
+});
+
 // Respons to message
-function handleMessage(message, channel) {
+function handleMessage(message, channel, userId) {
   console.log("handleMessage");
   //send a message to Johannas private channel (reminder)
-  // slack.bot.postMessageToUser('johanna.kraken', 'hi!', {icon_emoji: ':cat:' }).always(function(res) {
-  //   console.log("postMessageToUser");
+  // slack.bot.postEphemeralToUser('johanna.kraken', 'hi!', {icon_emoji: ':cat:' }).always(function(res) {
+  //   console.log("postEphemeralToUser");
   //   console.log(res);
   // }); 
   if (message.includes(' guidlines delete')) {
     console.log("handleMessage: guidlines delete");
-    guidlines.deleteGuidlines(message, channel);
+    guidlines.deleteGuidlines(message, channel, userId);
   } else if (message.includes(' guidlines add')) {
     console.log("handleMessage: guidlines add");
-    guidlines.addGuidlines(message, channel);
+    guidlines.addGuidlines(message, channel, userId);
   } else if (message.includes(' guidlines')) {
     //console.log("handleMessage: guidlines");
-    guidlines.getGuidlines(message, channel);
+    guidlines.getGuidlines(message, channel, userId);
   } else if (message.includes(' tags delete')) {
     console.log("handleMessage: tags delete");
-    tag.deleteTags(message, channel);
+    tag.deleteTags(message, channel, userId);
   } else if (message.includes(' tags add')) {
     console.log("handleMessage: tags add");
-    tag.addTags(message, channel);
+    tag.addTags(message, channel, userId);
   } else if (message.includes(' tags')) {
     //console.log("handleMessage: tags");
-    tag.getTags(message, channel);
+    tag.getTags(message, channel, userId);
   }else if (message.includes(' event create')) {
     //console.log("handleMessage: event create info");
-    event.eventCreateInfo(channel);
+    event.eventCreateInfo(channel, userId);
   }  else if (message.includes(' event all')) {
     //console.log("handleMessage: event all");
-    event.eventAll(channel);
-  } else if (message.includes(';') && message.includes('<@UE743CUJZ> ')){
+    event.eventAll(channel, userId);
+  } else if (message.includes(';') && message.includes(' event ')){
     //console.log("handleMessage: create an event ");
-    event.eventCreate(message, channel);
-  }else if (message.includes('<@UE743CUJZ>')){
+    event.eventCreate(message, channel, userId);
+  }else if (message.includes('<@UE743CUJZ>') || message.includes('<@UEHKUE9SP>')){
     //console.log("help")
-    help(message, channel);
+    help(message, channel, userId);
   }
 }
 
+
 //helper function (what you can do with the bot)
-function help(message, channel){
+function help(message, channelId, userId){
   console.log("message help");
 
-  slack.bot.postMessageToChannel(channel, 
-    "@memoria ...\n"+
+  slack.web.chat.postEphemeral({
+    channel: channelId, 
+    user: userId,
+    text: "@memoria ...\n"+
     "... guidlines                 (show all guidlines)\n"+
     "... tags                         (show all the tags that are in use)\n"+
     "... event all [#tag]       (show all events, filter with #tag)\n"+
@@ -89,5 +83,5 @@ function help(message, channel){
     "... event ...    \n"+
     "     ... all [#tag]    (show all events, filter with #tag)\n"+
     "     ... create        (information how to create an event)\n"*/
-  );
+  });
 }

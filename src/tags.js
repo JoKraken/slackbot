@@ -4,19 +4,19 @@ const data = require('./data');
 // var exports = module.exports = {};
 
 //add a tag
-exports.addTags = function(message, channel){
+exports.addTags = function(message, channelId, userId){
     //console.log("tags add");
     var split = message.split("<@UE743CUJZ> tags add ");
 
     data.tags.push(new data.Tag(data.tags.length, split[1]));
 
-    slack.bot.postMessageToChannel(
-        channel, "The tag "+split[1]+" is added"
-    )
+    slack.web.chat.postEphemeral({
+        channel:channelId, user:userId, text: "The tag "+split[1]+" is added"
+    })
 }
 
 //delete a tag
-exports.deleteTags = function(message, channel){
+exports.deleteTags = function(message, channelId, userId){
     //console.log("tags delete");
     var split = message.split("<@UE743CUJZ> tags delete ");
 
@@ -28,19 +28,19 @@ exports.deleteTags = function(message, channel){
         temp++;
     });
 
-    slack.bot.postMessageToChannel(
-        channel, "The tag "+split[1]+" is deleted."
-    )
+    slack.web.chat.postEphemeral({
+        channel: channelId, user:userId, text:"The tag "+split[1]+" is deleted."
+    })
 }
 
 //send message with the tags
-exports.getTags = function(message, channel){
+exports.getTags = function(message, channelId, userId){
     //console.log("message tags");
     var tags = getTagsString();
 
-    slack.bot.postMessageToChannel(
-        channel, "All tags: \n"+tags
-    )
+    slack.web.chat.postEphemeral({
+        channel:channelId, user:userId, text:"All tags: \n"+tags
+    })
 }
 
 //return an array with tags inside

@@ -4,7 +4,7 @@ const data = require('./data');
 // var exports = module.exports = {};
 
 //add a tag
-exports.addGuidlines = function(message, channel){
+exports.addGuidlines = function(message, channelId, userId){
     console.log("guidlines add");
     var split = message.split("<@UE743CUJZ> guidlines add ");
     var elements = split[1].split("; ");
@@ -15,15 +15,15 @@ exports.addGuidlines = function(message, channel){
                             elements[0],
                             elements[1]));
 
-    slack.bot.postMessageToChannel(
-        channel, "The guidline with the title "+elements[0]+" is added"
-    )
+    slack.web.chat.postEphemeral({
+        channel: channelId, user:userId, text: "The guidline with the title "+elements[0]+" is added"
+    })
 }
 
 //delete a tag
-exports.deleteGuidlines = function(message, channel){
+exports.deleteGuidlines = function(message, channelId, userId){
     console.log("guidlines delete");
-    var split = message.split("<@UE743CUJZ> guidlines delete ");
+    var split = message.split(" guidlines delete ");
 
     var temp = 0;
     data.guidlines.forEach(guidline => {
@@ -33,19 +33,19 @@ exports.deleteGuidlines = function(message, channel){
         temp++;
     });
 
-    slack.bot.postMessageToChannel(
-        channel, "The tag "+split[1]+" is deleted."
-    )
+    slack.web.chat.postEphemeral({
+        channel: channelId, user: userId, text:"The tag "+split[1]+" is deleted."
+    })
 }
 
 //send message with the guidlines
-exports.getGuidlines = function(message, channel){
+exports.getGuidlines = function(message, channelId, userId){
     //console.log("message guidlines");
     var guidlines = getGuidlinesString();
 
-    slack.bot.postMessageToChannel(
-        channel, "All guidlines: "+guidlines
-    );
+    slack.web.chat.postEphemeral({
+        channel: channelId, user:userId, text: "All guidlines: "+guidlines
+    });
 }
 
 //return the guidlines as a string
