@@ -36,6 +36,12 @@ slack.bot.on('message', res => {
 
 // Respons to message
 function handleMessage(message, channel) {
+  console.log("handleMessage");
+  //send a message to Johannas private channel (reminder)
+  // slack.bot.postMessageToUser('johanna.kraken', 'hi!', {icon_emoji: ':cat:' }).always(function(res) {
+  //   console.log("postMessageToUser");
+  //   console.log(res);
+  // }); 
   if (message.includes(' guidlines delete')) {
     console.log("handleMessage: guidlines delete");
     guidlines.deleteGuidlines(message, channel);

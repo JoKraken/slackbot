@@ -4,7 +4,7 @@ const { createMessageAdapter } = require('@slack/interactive-messages');
 const express = require('express');
 
 // Create the adapter using the app's signing secret, read from environment variable
-const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET);
+const slackInteractions = createMessageAdapter("48fcb092548876d6c1f25fbe792cace9");
 
 // Initialize an Express application
 // NOTE: You must use a body parser for the urlencoded format before attaching the adapter
@@ -45,9 +45,9 @@ const port = process.env.PORT || 8001;
 //   console.log(`server listening on port ${port}`);
 // });
 
-// app.listen(port, () => {
-//   console.log('Server listen on port super ' + port);
-// });
+app.listen(port, () => {
+  console.log('Server listen on port super ' + port);
+});
 
 app.get('/test', (req, res) => {
   console.log(req.protocol);
