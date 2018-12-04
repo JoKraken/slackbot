@@ -44,7 +44,8 @@ exports.getGuidlines = function(message, channelId, userId){
     var guidlines = getGuidlinesString();
 
     slack.web.chat.postEphemeral({
-        channel: channelId, user:userId, text: "All guidlines: "+guidlines
+        channel: channelId, user:userId, text: "All guidlines: "+guidlines+
+        "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> guidlines add/delete [name]"
     });
 }
 

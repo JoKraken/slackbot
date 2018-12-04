@@ -39,7 +39,8 @@ exports.getTags = function(message, channelId, userId){
     var tags = getTagsString();
 
     slack.web.chat.postEphemeral({
-        channel:channelId, user:userId, text:"All tags: \n"+tags
+        channel:channelId, user:userId, text:"All tags: \n"+tags+
+        "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> tags add/delete [name]"
     })
 }
 
