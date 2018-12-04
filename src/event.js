@@ -2,6 +2,9 @@ const slack = require('./bot');
 const data = require('./data');
 const interCompo = require('./interactiveComponents');
 const tags = require('./tags');
+const request = require('./request');
+
+var temp = [];
 
 // var exports = module.exports = {};
 
@@ -16,37 +19,43 @@ exports.eventCreateInfo = function(channelId, userId){
     });
 }
 
-//give out all events
+//send get event request to server
 exports.eventAll = function (channelId, userId){
-    //console.log("message event all "+data.event.length);
+    temp = [{channel: channelId, user: userId}];
+    request.get("events", 1);
+}
 
-    if(data.event.length == 0){
+//give all events out
+exports.eventAllOut = function (eventList){
+    console.log("eventAllOut");
+    if(eventList.length == 0){
         //console.log("no event");
         slack.web.chat.postEphemeral({
-            channel: channelId, user:userId, text:"No events are saved"});
+            channel: temp[0].channel, user:temp[0].user, text:"No events are saved"});
     }else{
         //console.log("event");
-
-        var attachmentArray = eventInfoAttachments();
+        var attachmentArray = eventInfoAttachments(eventList);
         slack.web.chat.postEphemeral({
-            channel: channelId, user: userId, text: "All upcomming <http://www.google.com|events>:", attachmentArray});
+            channel: temp[0].channel, user: temp[0].user, text: "All upcomming <http://www.google.com|events>:", attachments: attachmentArray});
     }
+    temp[0] = [];
 }
 
 //send messages with events infos
-function eventInfoAttachments(){
+function eventInfoAttachments(eventList){
     var array = [];
-    var length = data.event.length;
+    var length = eventList.length;
     for(var i = 1; i <= 5; i++){
         var a = length -i;
         var notiArray = getNotiArray();
         if(a >= 0){
-            var dateString = data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
+            var dateString = eventList[a].date;//data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
             array.push(interCompo.dropdownAtta(
-                dateString+" "+data.event[a].title, "NO", "nofification_art_selection", notiArray
+                dateString+" "+eventList[a].title, "NO", "nofification_art_selection", notiArray
             ));
         }
     }
+    //console.log(array);
     return array;
 }
 
@@ -112,11 +121,10 @@ function eventCreateAttachments(){
     });
     array.push(dropdown);
 
-    var event = data.event[data.event.length-1];
-    var date = new Date(event.date);
-    var dateString = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear()
+    var event = temp[1];
+    temp[1] = [];
     array.push(interCompo.confirmButtonAtta(
-        "You created the event '"+event.title+"' at the "+dateString+". \nWould you like to save the event?", "save_edit_delete_buttons"
+        "You created the event '"+event.title+"' at the "+event.date+". \nWould you like to save the event?", "save_edit_delete_buttons"
     ));
     //console.log(array);
 
@@ -144,23 +152,17 @@ function createTimeArray(){
 //craete an event
 function createEvent(message){
     var split = message.split(" event ");
-    var newEvent = new data.Event();
     var arr = split[1].split(";");
     if(arr.length >= 3){
-        newEvent.id = data.event.length;
-        newEvent.title = arr[1];
-        newEvent.description = arr[2];
 
-        newEvent.date = new Date();
-        var date = arr[0].split(".")
-        newEvent.date.setDate(date[0])
-        newEvent.date.setMonth(date[1]-1) //januar:0, februar:1, ...
-        newEvent.date.setYear(date[2])
-        if(arr.length >= 4){
-            newEvent.link = arr[3];
-        }
-        data.event.push(newEvent);
-        //console.log(data.event);
+        var body = {
+            'title': arr[1],
+            'date': arr[0],
+            'description': arr[2]
+            //'link': arr[3];
+        };
+        temp[1] = body;
+        request.post("events", body);
     }else{
         return false;
     }

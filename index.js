@@ -6,6 +6,7 @@ const tag = require('./src/tags');
 const user = require('./src/user');
 const data = require('./src/data');
 const express = require('./src/express');
+const request = require('./src/request');
 
 // Message Handler
 slack.bot.on('message', (res) => {
