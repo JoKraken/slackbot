@@ -1,5 +1,13 @@
 var request = require('request');
 var event = require('./event');
+var tag = require('./tags');
+
+/*
+    follow varibale:
+    1: event
+    2: tag
+    3: guidlines
+*/
 
 // Set the headers
 var headers = {
@@ -8,7 +16,7 @@ var headers = {
 }
 
 //send the POST request
-exports.post = function(urlEnd, body){
+exports.post = function(urlEnd, body, foolow){
     var options = {
         url: process.env.SERVER_URL+urlEnd,
         method: 'POST',
@@ -20,7 +28,10 @@ exports.post = function(urlEnd, body){
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             // Print out the response body
-            //console.log(body);
+            console.log(body);
+            if(foolow == 2){
+                tag.addTagsOut(JSON.parse(body).data);
+            }
         }
     })
 }

@@ -1,18 +1,30 @@
 const slack = require('./bot');
 const data = require('./data');
+const request = require('./request');
+
+var temp = [];
 
 // var exports = module.exports = {};
 
-//add a tag
+//send post request to server for create a tag
 exports.addTags = function(message, channelId, userId){
     //console.log("tags add");
     var split = message.split("<@UE743CUJZ> tags add ");
 
     data.tags.push(new data.Tag(data.tags.length, split[1]));
+    temp[0] = {channel: channelId, user: userId};
+    var body = {
+        'title': split[1],
+    };
+    request.post("events", body, 2);
+}
 
+exports.addTagsOut = function(body){
+    console.log(body);
     slack.web.chat.postEphemeral({
-        channel:channelId, user:userId, text: "The tag "+split[1]+" is added"
+        channel:temp[0].channel, user: temp[0].user, text: "The tag "+body.title+" is added"
     })
+    temp[0] = [];
 }
 
 //delete a tag
