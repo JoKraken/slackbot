@@ -71,7 +71,7 @@ exports.tags = tagArray;
 var guidlineArray = [];
 guidlineArray.push(new Guidline(0, "language", "For a better understanding of non-Finnish speakers, the English language should be preferred."));
 guidlineArray.push(new Guidline(1, "tags", "To have a better conection between slack and confuence we decided to use the same tags in both. \nTo see the tags plese use <@UE743CUJZ> tags"));
-exports.guidlines = guidlineArray;
+exports.guidelines = guidlineArray;
 
 var eventArray = [];
 exports.event = eventArray;

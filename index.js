@@ -1,7 +1,7 @@
 require('dotenv/config')
 const slack = require('./src/bot');
 const event = require('./src/event');
-const guidlines = require('./src/guidlines');
+const guidelines = require('./src/guidelines');
 const tag = require('./src/tags');
 const user = require('./src/user');
 const data = require('./src/data');
@@ -34,15 +34,15 @@ function handleMessage(message, channel, userId) {
   //   console.log("postEphemeralToUser");
   //   console.log(res);
   // }); 
-  if (message.includes(' guidlines delete')) {
-    console.log("handleMessage: guidlines delete");
-    guidlines.deleteGuidlines(message, channel, userId);
-  } else if (message.includes(' guidlines add')) {
-    console.log("handleMessage: guidlines add");
-    guidlines.addGuidlines(message, channel, userId);
-  } else if (message.includes(' guidlines')) {
-    //console.log("handleMessage: guidlines");
-    guidlines.getGuidlines(message, channel, userId);
+  if (message.includes(' guidelines delete')) {
+    console.log("handleMessage: guidelines delete");
+    guidelines.deleteguidelines(message, channel, userId);
+  } else if (message.includes(' guidelines add')) {
+    console.log("handleMessage: guidelines add");
+    guidelines.addguidelines(message, channel, userId);
+  } else if (message.includes(' guidelines')) {
+    //console.log("handleMessage: guidelines");
+    guidelines.getguidelines(message, channel, userId);
   } else if (message.includes(' tags delete')) {
     console.log("handleMessage: tags delete");
     tag.deleteTags(message, channel, userId);
@@ -76,7 +76,7 @@ function help(message, channelId, userId){
     channel: channelId, 
     user: userId,
     text: "@memoria ...\n"+
-    "... guidlines                 (show all guidlines)\n"+
+    "... guidelines                 (show all guidelines for communication)\n"+
     "... tags                         (show all the tags that are in use)\n"+
     "... event all [#tag]       (show all events, filter with #tag)\n"+
     "... event create           (information how to create an event)\n"

@@ -1,7 +1,7 @@
 {
   "name": "mobileproject",
   "version": "1.0.0",
-  "description": "slack bot for events and guidlines",
+  "description": "slack bot for events and guidelines",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

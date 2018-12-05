@@ -6,7 +6,7 @@ var tag = require('./tags');
     follow varibale:
     1: event
     2: tag
-    3: guidlines
+    3: guidelines
 */
 
 // Set the headers

@@ -14,14 +14,14 @@ exports.addTags = function(message, channelId, userId){
 
     temp[0] = {channel: channelId, user: userId};
     var body = {
-        'title': split[1],
+        'name': split[1],
     };
     request.post("tags", body, 2);
 }
 
 exports.addTagsOut = function(body){
     slack.web.chat.postEphemeral({
-        channel:temp[0].channel, user: temp[0].user, text: "The tag "+body.title+" is added"
+        channel:temp[0].channel, user: temp[0].user, text: "The tag "+body.name+" is added"
     })
     temp[0] = [];
 }
@@ -34,7 +34,7 @@ exports.deleteTags = function(message, channelId, userId){
     var id = "";
     tags.forEach(tag => {
         console.log(tag);
-        if(tag.title == split[1]){
+        if(tag.name == split[1]){
             id = tag._id;
         }
     });
@@ -71,7 +71,7 @@ exports.getTagsOut = function(body){
     var id = 0;
     tags = body;
     body.forEach(tag => {
-        string += tag.title;
+        string += tag.name;
         if(id < (body.length-2)){
             string += ", "
         }else if(id < (body.length-1)){
@@ -99,7 +99,7 @@ exports.getTagArray = function(){
     //console.log("getTagArray");
     var arr = [];
 
-    data.tags.forEach(tag => {
+    tags.forEach(tag => {
         arr.push({text: tag.name, value: tag.id});
     });
 
