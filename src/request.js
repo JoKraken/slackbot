@@ -12,7 +12,7 @@ var tag = require('./tags');
 // Set the headers
 var headers = {
     'User-Agent':       'Super Agent/0.0.1',
-    'Content-Type':     'application/x-www-form-urlencoded'
+    'Content-Type':     'application/json'
 }
 
 //send the POST request
@@ -51,13 +51,15 @@ exports.get = function(urlEnd, follow){
             //console.log(JSON.parse(body));
             if(follow == 1){
                 event.eventAllOut(JSON.parse(body).data);
+            } else if(follow == 2){
+                tag.getTagsOut(JSON.parse(body).data);
             }
         }
     })
 }
 
 //send the DELETE request
-exports.delete = function(urlEnd, id, func){
+exports.delete = function(urlEnd, id, follow){
     var options = {
         url: process.env.SERVER_URL+urlEnd+'/'+id,
         method: 'DELETE',
@@ -69,7 +71,9 @@ exports.delete = function(urlEnd, id, func){
         if (!error && response.statusCode == 200) {
             // Print out the response body
             console.log(body);
-            func();
+            if(follow == 2){
+                tag.deleteTagsOut();
+            }
         }
     })
 }

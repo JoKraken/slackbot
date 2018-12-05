@@ -104,10 +104,10 @@ exports.eventCreate = function(message, channel, userId){
 function eventCreateAttachments(){
     var array = [];
 
-    var tagArray = tags.getTagArray();
-    array.push(interCompo.dropdownAtta(
-        "Choose a tag", "Pick a tag...", "tag_selection", tagArray
-    ));
+    // var tagArray = tags.getTagArray();
+    // array.push(interCompo.dropdownAtta(
+    //     "Choose a tag", "Pick a tag...", "tag_selection", tagArray
+    // ));
 
     var timeArray = createTimeArray();
     var dropdown = interCompo.dropdownAtta(
