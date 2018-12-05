@@ -19,6 +19,7 @@ exports.addTags = function(message, channelId, userId){
     request.post("tags", body, 2);
 }
 
+//send a message to confirm that a tag is created
 exports.addTagsOut = function(body){
     slack.web.chat.postEphemeral({
         channel:temp[0].channel, user: temp[0].user, text: "The tag "+body.name+" is added"

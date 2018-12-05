@@ -1,21 +1,16 @@
 const slack = require('./bot');
 const data = require('./data');
+const request = require('./request');
 
 var temp = [];
+var guidelines = [];
 // var exports = module.exports = {};
 
-//add a tag
+//send post request to server for create a guideline
 exports.addguidelines = function(message, channelId, userId){
     console.log("guidelines add");
     var split = message.split("<@UE743CUJZ> guidelines add ");
     var elements = split[1].split("; ");
-
-    console.log(elements);
-    data.guidelines.push(new data.Guidline(
-                            data.guidelines.length, 
-                            elements[0],
-                            elements[1]));
-
     
     temp[0] = {channel: channelId, user: userId};
     var body = {
@@ -23,48 +18,70 @@ exports.addguidelines = function(message, channelId, userId){
         'description': elements[1]
     };
     request.post("guidelines", body, 3);
-    slack.web.chat.postEphemeral({
-        channel: channelId, user:userId, text: "The guidline with the title "+elements[0]+" is added"
-    })
 }
 
-//delete a tag
+//send a message to confirm that a guideline is created
+exports.addGuidelineOut = function(body){
+    slack.web.chat.postEphemeral({
+        channel:temp[0].channel, user: temp[0].user, text: "The guideline "+body.title+" is added"
+    })
+    temp[0] = [];
+}
+
+//send delete request to server for delete a guideline
 exports.deleteguidelines = function(message, channelId, userId){
-    console.log("guidelines delete");
+    //console.log("guidelines delete");
     var split = message.split(" guidelines delete ");
 
-    var temp = 0;
-    data.guidelines.forEach(guidline => {
-        if(guidline.name == split[1]){
-            data.guidelines.splice(temp, 1);
+    var id = "";
+    guidelines.forEach(guidline => {
+        console.log(guidline);
+        if(guidline.title == split[1]){
+            id = guidline._id;
         }
-        temp++;
     });
+    console.log("id: "+id);
 
+    if(id == ""){
+        slack.web.chat.postEphemeral({
+            channel: channelId, user: userId, text:"There is no guideline with this title."
+        })
+    }else{
+        temp[0] = {channel: channelId, user: userId};
+        request.delete("guidelines", id, 3);
+    }
+}
+
+//send delete request to server for delete a guideline
+exports.deleteGuidelinesOut = function(){
     slack.web.chat.postEphemeral({
-        channel: channelId, user: userId, text:"The tag "+split[1]+" is deleted."
+        channel:temp[0].channel, user: temp[0].user, text:"The guideline is deleted."
     })
+    temp[0] = [];
+}
+
+//send get request to server for get guidelines
+exports.getguidelines = function(message, channelId, userId){
+    //console.log("message guidelines");
+    temp[0] = {channel: channelId, user: userId};
+    request.get("guidelines", 3);
 }
 
 //send message with the guidelines
-exports.getguidelines = function(message, channelId, userId){
-    //console.log("message guidelines");
-    var guidelines = getguidelinesString();
+exports.getGuidelinesOut = function(body){
+    //console.log("getguidelinesString");
+    var string = "";
+    var id = 1;
+    guidelines = body;
+    body.forEach(guidline => {
+        string += "\n"+id+". "+guidline.title+"\n"+
+                guidline.description;
+        id++;
+    });
 
     slack.web.chat.postEphemeral({
-        channel: channelId, user:userId, text: "All guidelines: "+guidelines+
-        "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> guidelines add/delete [name]"
+        channel:temp[0].channel, user: temp[0].user, text: "All guidelines: "+string+
+        "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> guidelines add/delete [title]"
     });
-}
-
-//return the guidelines as a string
-function getguidelinesString(){
-    //console.log("getguidelinesString");
-    var temp = "";
-
-    data.guidelines.forEach(guidline => {
-        temp += "\n"+(guidline.id+1)+". "+guidline.name+"\n"+
-                guidline.text;
-    });
-    return temp;
+    temp[0] = [];
 }

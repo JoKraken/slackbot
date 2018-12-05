@@ -1,6 +1,7 @@
 var request = require('request');
 var event = require('./event');
 var tag = require('./tags');
+var guidelines = require('./guidelines');
 
 /*
     follow varibale:
@@ -31,6 +32,8 @@ exports.post = function(urlEnd, body, foolow){
             console.log(body);
             if(foolow == 2){
                 tag.addTagsOut(JSON.parse(body).data);
+            } else if(foolow == 3){
+                guidelines.addGuidelineOut(JSON.parse(body).data);
             }
         }
     })
@@ -53,6 +56,8 @@ exports.get = function(urlEnd, follow){
                 event.eventAllOut(JSON.parse(body).data);
             } else if(follow == 2){
                 tag.getTagsOut(JSON.parse(body).data);
+            } else if(follow == 3){
+                guidelines.getGuidelinesOut(JSON.parse(body).data);
             }
         }
     })
@@ -73,6 +78,8 @@ exports.delete = function(urlEnd, id, follow){
             console.log(body);
             if(follow == 2){
                 tag.deleteTagsOut();
+            } else if(follow == 3){
+                guidelines.deleteGuidelinesOut();
             }
         }
     })
