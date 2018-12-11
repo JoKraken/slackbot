@@ -12,8 +12,7 @@ exports.eventCreateInfo = function(channelId, userId){
 
     slack.web.chat.postEphemeral({
         channel: channelId, user:userId, text:"Create an event: \nTo create an event please use the following format:\n"+
-        "<@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])\n"+
-        "After that you can choose the tags, the start( & end) time and the time of notification."
+        "<@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [tag])(; [subscrip link])\n"
     });
 }
 
@@ -85,7 +84,7 @@ exports.eventCreate = function(message, channel, userId){
         slack.web.chat.postEphemeral({ 
             channel: channel, 
             user: userId,
-            text: "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [subscrip link])" 
+            text: "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [tag])(; [subscrip link])" 
         });
     }else{
         //console.log("Event could be created");
