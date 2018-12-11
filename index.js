@@ -35,34 +35,24 @@ function handleMessage(message, channel, userId) {
   //   console.log(res);
   // }); 
   if (message.includes(' guidelines delete')) {
-    console.log("handleMessage: guidelines delete");
     guidelines.deleteguidelines(message, channel, userId);
   } else if (message.includes(' guidelines add')) {
-    console.log("handleMessage: guidelines add");
     guidelines.addguidelines(message, channel, userId);
   } else if (message.includes(' guidelines')) {
-    //console.log("handleMessage: guidelines");
     guidelines.getguidelines(message, channel, userId);
   } else if (message.includes(' tags delete')) {
-    console.log("handleMessage: tags delete");
     tag.deleteTags(message, channel, userId);
   } else if (message.includes(' tags add')) {
-    console.log("handleMessage: tags add");
     tag.addTags(message, channel, userId);
   } else if (message.includes(' tags')) {
-    //console.log("handleMessage: tags");
     tag.getTags(message, channel, userId);
   }else if (message.includes(' event create')) {
-    //console.log("handleMessage: event create info");
     event.eventCreateInfo(channel, userId);
   }  else if (message.includes(' event all')) {
-    //console.log("handleMessage: event all");
     event.eventAll(channel, userId);
   } else if (message.includes(';') && message.includes(' event ')){
-    //console.log("handleMessage: create an event ");
     event.eventCreate(message, channel, userId);
   }else if (message.includes('<@UE743CUJZ>') || message.includes('<@UEHKUE9SP>')){
-    //console.log("help")
     help(message, channel, userId);
   }
 }
@@ -80,9 +70,5 @@ function help(message, channelId, userId){
     "... tags                         (show all the tags that are in use)\n"+
     "... event all [#tag]       (show all events, filter with #tag)\n"+
     "... event create           (information how to create an event)\n"
-    /*
-    "... event ...    \n"+
-    "     ... all [#tag]    (show all events, filter with #tag)\n"+
-    "     ... create        (information how to create an event)\n"*/
   });
 }

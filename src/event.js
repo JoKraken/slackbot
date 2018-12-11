@@ -6,8 +6,6 @@ const request = require('./request');
 
 var temp = [];
 
-// var exports = module.exports = {};
-
 //give out infos to create an event
 exports.eventCreateInfo = function(channelId, userId){
     //("message event create info");
@@ -36,7 +34,8 @@ exports.eventAllOut = function (eventList){
         //console.log("event");
         var attachmentArray = eventInfoAttachments(eventList);
         slack.web.chat.postEphemeral({
-            channel: temp[0].channel, user: temp[0].user, text: "All upcomming <http://www.google.com|events>:", attachments: attachmentArray});
+            channel: temp[0].channel, user: temp[0].user, text: "All upcomming <http://www.google.com|events>:", attachments: attachmentArray
+        });
     }
     temp[0] = [];
 }
@@ -47,11 +46,17 @@ function eventInfoAttachments(eventList){
     var length = eventList.length;
     for(var i = 1; i <= 5; i++){
         var a = length -i;
-        var notiArray = getNotiArray();
+        //var notiArray = getNotiArray();
         if(a >= 0){
-            var dateString = eventList[a].date;//data.event[a].date.getDate()+"."+(data.event[a].date.getMonth()+1)+"."+data.event[a].date.getFullYear();
+            var dateString = eventList[a].date;
+            var string = dateString+" "+eventList[a].title+"\n";
+            if(eventList[a].startTime != undefined) string += eventList[a].startTime;
+            if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
+            string += "\n"+eventList[a].description;
+            if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
             array.push(interCompo.dropdownAtta(
-                dateString+" "+eventList[a].title, "NO", "nofification_art_selection", notiArray
+                string,
+                "NO", "nofification_art_selection", null//notiArray
             ));
         }
     }
@@ -78,8 +83,6 @@ exports.eventCreate = function(message, channel, userId){
 
 
     if(!createEvent(message)){
-        // slack.bot.postEphemeralToChannel(
-        //     channel, "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])");
         web.chat.postEphemeral({ 
             channel: channel, 
             user: userId,
@@ -88,13 +91,12 @@ exports.eventCreate = function(message, channel, userId){
     }else{
         //console.log("Event could be created");
 
-        var attachmentsArray = eventCreateAttachments();
-        //slack.bot.postEphemeralToChannel(channel, "Event could be created", string); 
+        //var attachmentsArray = eventCreateAttachments();
         slack.web.chat.postEphemeral({ 
             channel: channel, 
             user: userId,
-            text: "Event could be created",
-            attachments: attachmentsArray
+            text: "Event could be created"
+            //attachments: attachmentsArray
         });       
     }
     
@@ -104,10 +106,10 @@ exports.eventCreate = function(message, channel, userId){
 function eventCreateAttachments(){
     var array = [];
 
-    // var tagArray = tags.getTagArray();
-    // array.push(interCompo.dropdownAtta(
-    //     "Choose a tag", "Pick a tag...", "tag_selection", tagArray
-    // ));
+    var tagArray = tags.getTagArray();
+    array.push(interCompo.dropdownAtta(
+        "Choose a tag", "Pick a tag...", "tag_selection", tagArray
+    ));
 
     var timeArray = createTimeArray();
     var dropdown = interCompo.dropdownAtta(
@@ -158,8 +160,8 @@ function createEvent(message){
         var body = {
             'title': arr[1],
             'date': arr[0],
-            'description': arr[2]
-            //'link': arr[3];
+            'description': arr[2],
+            'link': arr[3]
         };
         temp[1] = body;
         request.post("events", body);
