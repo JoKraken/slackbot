@@ -5,6 +5,7 @@ const tags = require('./tags');
 const request = require('./request');
 
 var temp = [];
+var event = [];
 
 //give out infos to create an event
 exports.eventCreateInfo = function(channelId, userId){
@@ -41,6 +42,7 @@ exports.eventAllOut = function (eventList){
 
 //send messages with events infos
 function eventInfoAttachments(eventList){
+    event = eventList;
     var array = [];
     var length = eventList.length;
     for(var i = 1; i <= 5; i++){
@@ -179,4 +181,36 @@ function createEvent(message){
         return false;
     }
     return true;
+}
+
+
+//send repuest with delete tags
+exports.deleteEvent = function(message, channelId, userId){
+    //console.log("tags delete");
+    var split = message.split("<@UE743CUJZ> event delete");
+
+    var id = "";
+    event.forEach(ev => {
+        console.log(ev);
+        if(ev.title == split[1]){
+            id = ev._id;
+        }
+    });
+
+    if(id != ""){
+        temp[0] = {channel: channelId, user: userId};
+        request.delete("events", id, 1);
+    }else{
+        slack.web.chat.postEphemeral({
+            channel: channelId, user: userId, text:"There is no event with this title."
+        })
+    }
+}
+
+//send message with answere of delete tags
+exports.deleteEventOut = function(){
+    slack.web.chat.postEphemeral({
+        channel: temp[0].channel, user: temp[0].user, text:"The event is deleted."
+    })
+    temp[0] = [];
 }

@@ -49,7 +49,9 @@ function handleMessage(message, channel, userId) {
   }else if (message.includes(' event create')) {
     event.eventCreateInfo(channel, userId);
   }  else if (message.includes(' event all')) {
-    event.eventAll(channel, userId);
+    event.eventAll(channel, userId); 
+  } else if (message.includes(' event delete')) {
+    event.deleteEvent(message, channel, userId);
   } else if (message.includes(';') && message.includes(' event ')){
     event.eventCreate(message, channel, userId);
   }else if (message.includes('<@UE743CUJZ>') || message.includes('<@UEHKUE9SP>')){

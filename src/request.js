@@ -76,7 +76,9 @@ exports.delete = function(urlEnd, id, follow){
         if (!error && response.statusCode == 200) {
             // Print out the response body
             console.log(body);
-            if(follow == 2){
+            if(follow == 1){
+                event.deleteEventOut();
+            } else if(follow == 2){
                 tag.deleteTagsOut();
             } else if(follow == 3){
                 guidelines.deleteGuidelinesOut();
