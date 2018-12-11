@@ -81,12 +81,11 @@ function getNotiArray(){
 exports.eventCreate = function(message, channel, userId){
     //console.log("message event create");
 
-
     if(!createEvent(message)){
-        web.chat.postEphemeral({ 
+        slack.web.chat.postEphemeral({ 
             channel: channel, 
             user: userId,
-            text: "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy]; [title]; [description](; [subscrip link])" 
+            text: "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [subscrip link])" 
         });
     }else{
         //console.log("Event could be created");
@@ -155,14 +154,26 @@ function createTimeArray(){
 function createEvent(message){
     var split = message.split(" event ");
     var arr = split[1].split(";");
+    console.log(arr);
     if(arr.length >= 3){
 
         var body = {
             'title': arr[1],
-            'date': arr[0],
             'description': arr[2],
-            'link': arr[3]
+            'tag': arr[3],
+            'link': arr[4]
         };
+        var date = arr[0].split(" ");
+        if(date.length == 1){
+            body["data"] = arr[0];
+        }else if(date.length == 2){
+            body["data"] = date[0];
+            var time = date[1].split("-");
+            console.log(time);
+            console.log(time.length);
+            body["startTime"] = time[0];
+            if(time.length ==2) body["endTime"] = time[1];
+        } else return false;
         temp[1] = body;
         request.post("events", body);
     }else{
