@@ -1,6 +1,7 @@
 # MobileProject slackbot
 
 This is the node.js code for the slackbot. With this slackbot you can show/add/edit/delete guidlelines/tags/events. You can use the following commands:
+
 ```
 @slackbotname
 ... guidelines             (show all guidelines for communication)
@@ -10,6 +11,7 @@ This is the node.js code for the slackbot. With this slackbot you can show/add/e
 ```
 
 Also there is an weekly update on every monday of all the events that are coming up the next week.
+You will find the code of the backend and the website [here](https://github.com/MobileProject-Blank);
 
 ## Getting Started
 

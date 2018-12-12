@@ -18,8 +18,9 @@ exports.eventCreateInfo = function(channelId, userId){
 }
 
 //send get event request to server
-exports.eventAll = function (channelId, userId){
-    temp = [{channel: channelId, user: userId}];
+exports.eventAll = function (message, channelId, userId){
+    var arr = message.split("event all");
+    temp = [{channel: channelId, user: userId, tag: arr[1]}];
     request.get("events", 1);
 }
 
@@ -45,21 +46,26 @@ function eventInfoAttachments(eventList){
     event = eventList;
     var array = [];
     var length = eventList.length;
-    for(var i = 1; i <= 5; i++){
+    var max = 5;
+    for(var i = 1; i <= max; i++){
         var a = length -i;
         //var notiArray = getNotiArray();
         if(a >= 0){
-            var dateString = eventList[a].date;
-            var string = dateString+" "+eventList[a].title+"\n";
-            if(eventList[a].startTime != undefined) string += eventList[a].startTime;
-            if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
-            if(eventList[a].tag != undefined) string += " - tag:"+eventList[a].tag;
-            string += "\n"+eventList[a].description;
-            if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
-            array.push(interCompo.dropdownAtta(
-                string,
-                "NO", "nofification_art_selection", null//notiArray
-            ));
+            if(temp[0].tag == eventList[a].tag){ 
+                var dateString = eventList[a].date;
+                var string = dateString+" "+eventList[a].title+"\n";
+                if(eventList[a].startTime != undefined) string += eventList[a].startTime;
+                if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
+                if(eventList[a].tag != undefined) string += " - tag:"+eventList[a].tag;
+                string += "\n"+eventList[a].description;
+                if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
+                array.push(interCompo.dropdownAtta(
+                    string,
+                    "NO", "nofification_art_selection", null//notiArray
+                ));
+            } else {
+                max++;
+            }
         }
     }
     //console.log(array);

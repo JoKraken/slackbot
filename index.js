@@ -45,7 +45,7 @@ function handleMessage(message, channel, userId) {
   }else if (message.includes(' event create')) {
     event.eventCreateInfo(channel, userId);
   }  else if (message.includes(' event all')) {
-    event.eventAll(channel, userId); 
+    event.eventAll(message, channel, userId); 
   } else if (message.includes(' event delete')) {
     event.deleteEvent(message, channel, userId);
   } else if (message.includes(';') && message.includes(' event ')){
@@ -64,9 +64,9 @@ function help(message, channelId, userId){
     channel: channelId, 
     user: userId,
     text: "@memoria ...\n"+
-    "... guidelines                 (show all guidelines for communication)\n"+
+    "... guidelines                (show all guidelines for communication)\n"+
     "... tags                         (show all the tags that are in use)\n"+
-    "... event all [#tag]       (show all events, filter with #tag)\n"+
+    "... event all (tag)       (show all events, filter with a tag name)\n"+
     "... event create           (information how to create an event)\n"
   });
 }

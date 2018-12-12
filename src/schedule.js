@@ -56,7 +56,6 @@ function eventInfo(eventList){
           ));
         } else {
           max++;
-          console.log("max: "+max);
         }
       }
   }
