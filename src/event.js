@@ -105,6 +105,26 @@ exports.eventCreate = function(message, channel, userId){
     
 }
 
+exports.createEventOut = function(event){
+    console.log(event);
+    var dateString = event.date;
+    var string = "*"+dateString+" "+event.title+"*\n";
+    if(event.startTime != undefined) string += event.startTime;
+    if(event.endTime != undefined) string += "-"+event.endTime;
+    if(event.tag != undefined) string += " - tag:"+event.tag;
+    string += "\n"+event.description;
+    if(event.link != undefined) string += "\nTo subscribe to this event please klick <"+event.link+"|here>";
+    var arr =[];
+    arr.push(interCompo.dropdownAtta(
+        string, "", "", null
+    ));
+    slack.web.chat.postMessage({ 
+        channel: "event", 
+        text: "",
+        attachments: arr
+    });  
+}
+
 //return the tags, start and end time dropdown & the confirm buttons
 function eventCreateAttachments(){
     var array = [];
@@ -178,7 +198,7 @@ function createEvent(message){
         } else return false;
         console.log(body);
         temp[1] = body;
-        request.post("events", body);
+        request.post("events", body, 1);
     }else{
         return false;
     }

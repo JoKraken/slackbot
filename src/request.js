@@ -19,7 +19,7 @@ var headers = {
 }
 
 //send the POST request
-exports.post = function(urlEnd, body, foolow){
+exports.post = function(urlEnd, body, follow){
     var options = {
         url: process.env.SERVER_URL+urlEnd,
         method: 'POST',
@@ -32,9 +32,11 @@ exports.post = function(urlEnd, body, foolow){
         if (!error && response.statusCode == 200) {
             // Print out the response body
             console.log(body);
-            if(foolow == 2){
+            if(follow == 1){
+                event.createEventOut(JSON.parse(body).data);
+            } else if(follow == 2){
                 tag.addTagsOut(JSON.parse(body).data);
-            } else if(foolow == 3){
+            } else if(follow == 3){
                 guidelines.addGuidelineOut(JSON.parse(body).data);
             }
         }

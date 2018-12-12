@@ -35,6 +35,7 @@ function eventInfo(eventList){
           var string = dateString+" "+eventList[a].title+"\n";
           if(eventList[a].startTime != undefined) string += eventList[a].startTime;
           if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
+          if(eventList[a].tag != undefined) string += " - tag:"+eventList[a].tag;
           //string += "\n"+eventList[a].description;
           if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
           array.push(interCompo.dropdownAtta(
