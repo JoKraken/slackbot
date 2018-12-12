@@ -7,6 +7,7 @@ const user = require('./src/user');
 const data = require('./src/data');
 const express = require('./src/express');
 const request = require('./src/request');
+const schedule = require('./src/schedule');
 
 // Message Handler
 slack.bot.on('message', (res) => {
@@ -29,11 +30,6 @@ slack.bot.on('', (res) => {
 // Respons to message
 function handleMessage(message, channel, userId) {
   console.log("handleMessage");
-  //send a message to Johannas private channel (reminder)
-  // slack.bot.postEphemeralToUser('johanna.kraken', 'hi!', {icon_emoji: ':cat:' }).always(function(res) {
-  //   console.log("postEphemeralToUser");
-  //   console.log(res);
-  // }); 
   if (message.includes(' guidelines delete')) {
     guidelines.deleteguidelines(message, channel, userId);
   } else if (message.includes(' guidelines add')) {
