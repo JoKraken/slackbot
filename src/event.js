@@ -48,11 +48,13 @@ function eventInfoAttachments(eventList){
     for(var i = 1; i <= 5; i++){
         var a = length -i;
         //var notiArray = getNotiArray();
+        console.log(eventList[a]);
         if(a >= 0){
             var dateString = eventList[a].date;
             var string = dateString+" "+eventList[a].title+"\n";
             if(eventList[a].startTime != undefined) string += eventList[a].startTime;
             if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
+            if(eventList[a].tag != undefined) string += " - tag:"+eventList[a].tag;
             string += "\n"+eventList[a].description;
             if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
             array.push(interCompo.dropdownAtta(
@@ -156,26 +158,25 @@ function createTimeArray(){
 function createEvent(message){
     var split = message.split(" event ");
     var arr = split[1].split(";");
-    console.log(arr);
     if(arr.length >= 3){
-
+        var link = arr[4].split("<");
+        var link = link[1].split("|");
         var body = {
             'title': arr[1],
             'description': arr[2],
             'tag': arr[3],
-            'link': arr[4]
+            'link': link[0]
         };
         var date = arr[0].split(" ");
         if(date.length == 1){
-            body["data"] = arr[0];
+            body["date"] = arr[0];
         }else if(date.length == 2){
-            body["data"] = date[0];
+            body["date"] = date[0];
             var time = date[1].split("-");
-            console.log(time);
-            console.log(time.length);
             body["startTime"] = time[0];
             if(time.length ==2) body["endTime"] = time[1];
         } else return false;
+        console.log(body);
         temp[1] = body;
         request.post("events", body);
     }else{
@@ -192,12 +193,12 @@ exports.deleteEvent = function(message, channelId, userId){
 
     var id = "";
     event.forEach(ev => {
-        console.log(ev);
         if(ev.title == split[1]){
             id = ev._id;
         }
     });
 
+    console.log(id);
     if(id != ""){
         temp[0] = {channel: channelId, user: userId};
         request.delete("events", id, 1);

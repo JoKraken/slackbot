@@ -62,17 +62,6 @@ var userEvent = class UserEvent{
         this.noti_id = 0;
     }
 }
-
-var tagArray = [];
-tagArray.push(new Tag(0, "general"));tagArray.push(new Tag(1, "Helsinki"));tagArray.push(new Tag(2, "development"));tagArray.push(new Tag(3, "managment"));tagArray.push(new Tag(4, "after work"));
-tagArray.push(new Tag(5,"marketing"));tagArray.push(new Tag(6, "training"));tagArray.push(new Tag(7, "meeting"));tagArray.push();tagArray.push();
-exports.tags = tagArray;
-
-var guidlineArray = [];
-guidlineArray.push(new Guidline(0, "language", "For a better understanding of non-Finnish speakers, the English language should be preferred."));
-guidlineArray.push(new Guidline(1, "tags", "To have a better conection between slack and confuence we decided to use the same tags in both. \nTo see the tags plese use <@UE743CUJZ> tags"));
-exports.guidelines = guidlineArray;
-
 var eventArray = [];
 exports.event = eventArray;
 

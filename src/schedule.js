@@ -46,3 +46,8 @@ function eventInfo(eventList){
   //console.log(array);
   return array;
 }
+
+//send a message to the users private channel for daily reminder of notifications on 8:00
+var b = schedule.scheduleJob('00 8 * * 1-5', function(){
+  console.log('Daily nofification at 8:00!');
+});
