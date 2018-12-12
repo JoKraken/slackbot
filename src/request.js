@@ -2,12 +2,14 @@ var request = require('request');
 var event = require('./event');
 var tag = require('./tags');
 var guidelines = require('./guidelines');
+var schedule = require('./schedule');
 
 /*
     follow varibale:
     1: event
     2: tag
     3: guidelines
+    4: schedule
 */
 
 // Set the headers
@@ -58,6 +60,8 @@ exports.get = function(urlEnd, follow){
                 tag.getTagsOut(JSON.parse(body).data);
             } else if(follow == 3){
                 guidelines.getGuidelinesOut(JSON.parse(body).data);
+            } else if(follow == 4){
+                schedule.weekScheduleEvent(JSON.parse(body).data);
             }
         }
     })

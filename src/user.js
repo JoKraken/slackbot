@@ -20,7 +20,6 @@ exports.createUser = function(userSlackId){
     var newUser = new database.User();
     newUser.id = userId;
     newUser.slack_user_id = userSlackId;
-    newUser.name = "";
     //console.log(newUser);
     database.user.push(newUser);
 }

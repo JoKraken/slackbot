@@ -40,7 +40,7 @@ exports.eventAllOut = function (eventList){
     temp[0] = [];
 }
 
-//send messages with events infos
+//create array with the last 5 events infos
 function eventInfoAttachments(eventList){
     event = eventList;
     var array = [];
@@ -64,6 +64,7 @@ function eventInfoAttachments(eventList){
     //console.log(array);
     return array;
 }
+
 
 //return the time ntification for dropdown
 function getNotiArray(){
