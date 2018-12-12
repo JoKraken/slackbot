@@ -48,7 +48,6 @@ function eventInfoAttachments(eventList){
     for(var i = 1; i <= 5; i++){
         var a = length -i;
         //var notiArray = getNotiArray();
-        console.log(eventList[a]);
         if(a >= 0){
             var dateString = eventList[a].date;
             var string = dateString+" "+eventList[a].title+"\n";

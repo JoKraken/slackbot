@@ -9,7 +9,7 @@ var schedule = require('node-schedule');
 //send a message to the users private channel for weekly reminder on monday morning 8:00
 //send get event request to server
 //var a = schedule.scheduleJob({hour: 8, minute: 0, dayOfWeek: 1}, function(){
-var a = schedule.scheduleJob('51 * * * *', function(){
+var a = schedule.scheduleJob('19 * * * *', function(){
   console.log('The answer to life, the universe, and everything!');
   request.get("events", 4);
 });
@@ -17,9 +17,15 @@ var a = schedule.scheduleJob('51 * * * *', function(){
 exports.weekScheduleEvent = function (eventList){
   var attachmentArray = eventInfo(eventList);
   data.user.forEach(user => {
-    slack.web.chat.postMessage({
-      channel: '@'+user.slack_user_id, text: "All upcomming event this week:", attachments: attachmentArray
-    });
+    if(attachmentArray.length == 0){
+      slack.web.chat.postMessage({
+        channel: '@'+user.slack_user_id, text: "There are no upcomming event this week!", attachments: attachmentArray
+      });
+    }else{
+      slack.web.chat.postMessage({
+        channel: '@'+user.slack_user_id, text: "All upcomming event this week:", attachments: attachmentArray
+      });
+    }
   });
   
 }
@@ -28,10 +34,16 @@ exports.weekScheduleEvent = function (eventList){
 function eventInfo(eventList){
   var array = [];
   var length = eventList.length;
-  for(var i = 1; i <= 5; i++){
+  var max = 5;
+  for(var i = 1; i <= max; i++){
       var a = length -i;
       if(a >= 0){
-          var dateString = eventList[a].date;
+        var dateString = eventList[a].date;
+        var startDate = new Date();
+        var endDate = new Date(startDate.getTime() + (7 * 24 * 60 * 60 * 1000));
+        var arr = eventList[a].date.split(".");
+        var date = new Date(arr[2], (arr[1]-1), arr[0])
+        if(startDate.getTime() <= date.getTime() && endDate.getTime() >= date.getTime()){
           var string = dateString+" "+eventList[a].title+"\n";
           if(eventList[a].startTime != undefined) string += eventList[a].startTime;
           if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
@@ -42,6 +54,10 @@ function eventInfo(eventList){
               string,
               "NO", "schedule_nofification_art_selection", null
           ));
+        } else {
+          max++;
+          console.log("max: "+max);
+        }
       }
   }
   //console.log(array);
