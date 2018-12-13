@@ -6,10 +6,10 @@ var schedule = require('./schedule');
 
 /*
     follow varibale:
-    1: event
-    2: tag
-    3: guidelines
-    4: schedule
+        1: event
+        2: tag
+        3: guidelines
+        4: schedule
 */
 
 // Set the headers
@@ -30,8 +30,7 @@ exports.post = function(urlEnd, body, follow){
     // Start the request
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            // Print out the response body
-            console.log(body);
+            //console.log(body);
             if(follow == 1){
                 event.createEventOut(JSON.parse(body).data);
             } else if(follow == 2){
@@ -53,9 +52,8 @@ exports.get = function(urlEnd, follow){
     
     // Start the request
     request(options, function (error, response, body) {
-        // Print out the response body
         if (!error && response.statusCode == 200) {
-            //console.log(JSON.parse(body));
+            console.log(JSON.parse(body));
             if(follow == 1){
                 event.eventAllOut(JSON.parse(body).data);
             } else if(follow == 2){
@@ -80,7 +78,6 @@ exports.delete = function(urlEnd, id, follow){
     // Start the request
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            // Print out the response body
             console.log(body);
             if(follow == 1){
                 event.deleteEventOut();

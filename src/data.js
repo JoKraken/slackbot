@@ -69,8 +69,8 @@ var userArray = [];
 exports.user = userArray;
 
 var notiArray_art = [];
-notiArray_art.push(new Notification(0, "NO"));notiArray_art.push(new Notification(1, "SLACK"));
-notiArray_art.push(new Notification(2, "EMAIL"));notiArray_art.push(new Notification(3, "BOTH"));
+notiArray_art.push(new Notification(0, "no notification"));notiArray_art.push(new Notification(1, "slack"));
+notiArray_art.push(new Notification(2, "email"));notiArray_art.push(new Notification(3, "both"));
 exports.noti_art = notiArray_art;
 
 var notiArray_time = [];

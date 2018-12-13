@@ -79,9 +79,16 @@ exports.getGuidelinesOut = function(body){
         id++;
     });
 
-    slack.web.chat.postEphemeral({
-        channel:temp[0].channel, user: temp[0].user, text: "All guidelines: "+string+
-        "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> guidelines add/delete [title]"
-    });
+    if(string == ""){
+        slack.web.chat.postEphemeral({
+            channel:temp[0].channel, user: temp[0].user, text: "There are no guidelines saved."+
+            "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> guidelines add/delete [title]"
+        });
+    }else{
+        slack.web.chat.postEphemeral({
+            channel:temp[0].channel, user: temp[0].user, text: "All guidelines: "+string+
+            "\n\nIf you want to add or delete a tag please use: <@UE743CUJZ> guidelines add/delete [title]"
+        });
+    }
     temp[0] = [];
 }

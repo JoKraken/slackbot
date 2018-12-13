@@ -8,8 +8,7 @@ var schedule = require('node-schedule');
 
 //send a message to the users private channel for weekly reminder on monday morning 8:00
 //send get event request to server
-//var a = schedule.scheduleJob({hour: 8, minute: 0, dayOfWeek: 1}, function(){
-var a = schedule.scheduleJob('19 * * * *', function(){
+var a = schedule.scheduleJob({hour: 8, minute: 0, dayOfWeek: 1}, function(){
   console.log('The answer to life, the universe, and everything!');
   request.get("events", 4);
 });
@@ -39,17 +38,21 @@ function eventInfo(eventList){
       var a = length -i;
       if(a >= 0){
         var dateString = eventList[a].date;
-        var startDate = new Date();
-        var endDate = new Date(startDate.getTime() + (7 * 24 * 60 * 60 * 1000));
+        var startDate = new Date().setHours(0);
+        startDate = new Date(startDate).setMinutes(0);
+        startDate = new Date(startDate).setMilliseconds(0);
+        console.log(new Date(startDate));
+        var endDate = new Date(new Date(startDate).getTime() + (7 * 24 * 60 * 60 * 1000));
         var arr = eventList[a].date.split(".");
         var date = new Date(arr[2], (arr[1]-1), arr[0])
-        if(startDate.getTime() <= date.getTime() && endDate.getTime() >= date.getTime()){
+        date = date.setMinutes(5);
+        console.log(date);
+        if(startDate <= date && endDate.getTime() >= date){
           var string = dateString+" "+eventList[a].title+"\n";
           if(eventList[a].startTime != undefined) string += eventList[a].startTime;
           if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
-          if(eventList[a].tag != undefined) string += " - tag:"+eventList[a].tag;
-          //string += "\n"+eventList[a].description;
-          if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
+          if(eventList[a].tag != undefined) string += " - tag: "+eventList[a].tag;
+          if(eventList[a].link != undefined && eventList[a].link != "") string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
           array.push(interCompo.dropdownAtta(
               string,
               "NO", "schedule_nofification_art_selection", null
@@ -59,7 +62,6 @@ function eventInfo(eventList){
         }
       }
   }
-  //console.log(array);
   return array;
 }
 

@@ -10,7 +10,6 @@ var event = [];
 //give out infos to create an event
 exports.eventCreateInfo = function(channelId, userId){
     //("message event create info");
-
     slack.web.chat.postEphemeral({
         channel: channelId, user:userId, text:"Create an event: \nTo create an event please use the following format:\n"+
         "<@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [tag])(; [subscrip link])\n"
@@ -19,7 +18,7 @@ exports.eventCreateInfo = function(channelId, userId){
 
 //send get event request to server
 exports.eventAll = function (message, channelId, userId){
-    var arr = message.split("event all");
+    var arr = message.split("event all ");
     temp = [{channel: channelId, user: userId, tag: arr[1]}];
     request.get("events", 1);
 }
@@ -28,15 +27,19 @@ exports.eventAll = function (message, channelId, userId){
 exports.eventAllOut = function (eventList){
     console.log("eventAllOut");
     if(eventList.length == 0){
-        //console.log("no event");
         slack.web.chat.postEphemeral({
             channel: temp[0].channel, user:temp[0].user, text:"No events are saved"});
     }else{
-        //console.log("event");
         var attachmentArray = eventInfoAttachments(eventList);
-        slack.web.chat.postEphemeral({
-            channel: temp[0].channel, user: temp[0].user, text: "All upcomming <http://www.google.com|events>:", attachments: attachmentArray
-        });
+        if(attachmentArray.length == 0){
+            slack.web.chat.postEphemeral({
+                channel: temp[0].channel, user: temp[0].user, text: "There are no events filtered by this tag", attachments: null
+            });
+        }else{
+            slack.web.chat.postEphemeral({
+                channel: temp[0].channel, user: temp[0].user, text: "All upcomming <http://localhost:4200/|events>:", attachments: attachmentArray
+            });
+        }
     }
     temp[0] = [];
 }
@@ -49,33 +52,31 @@ function eventInfoAttachments(eventList){
     var max = 5;
     for(var i = 1; i <= max; i++){
         var a = length -i;
-        //var notiArray = getNotiArray();
+        var notiArray = getNotiArray();
         if(a >= 0){
-            if(temp[0].tag == eventList[a].tag){ 
+            if(temp[0].tag == undefined || temp[0].tag == eventList[a].tag){ 
                 var dateString = eventList[a].date;
                 var string = dateString+" "+eventList[a].title+"\n";
                 if(eventList[a].startTime != undefined) string += eventList[a].startTime;
                 if(eventList[a].endTime != undefined) string += "-"+eventList[a].endTime;
                 if(eventList[a].tag != undefined) string += " - tag:"+eventList[a].tag;
                 string += "\n"+eventList[a].description;
-                if(eventList[a].link != undefined) string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
+                if(eventList[a].link != undefined && eventList[a].link != "") string += "\nTo subscribe to this event please klick <"+eventList[a].link+"|here>";
                 array.push(interCompo.dropdownAtta(
                     string,
-                    "NO", "nofification_art_selection", null//notiArray
+                    "no notification", "nofification_art_selection", notiArray
                 ));
             } else {
                 max++;
             }
         }
     }
-    //console.log(array);
     return array;
 }
 
 
-//return the time ntification for dropdown
+//return the time notification for dropdown
 function getNotiArray(){
-    //console.log("getNotiArray");
     var notiArray = [];
     
     data.noti_art.forEach(noti => {
@@ -88,8 +89,6 @@ function getNotiArray(){
 //give out the event options if you the format is right 
 //if not give a hint to the format
 exports.eventCreate = function(message, channel, userId){
-    //console.log("message event create");
-
     if(!createEvent(message)){
         slack.web.chat.postEphemeral({ 
             channel: channel, 
@@ -97,8 +96,6 @@ exports.eventCreate = function(message, channel, userId){
             text: "Event could not be created. Please use this formatation: \n <@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [tag])(; [subscrip link])" 
         });
     }else{
-        //console.log("Event could be created");
-
         //var attachmentsArray = eventCreateAttachments();
         slack.web.chat.postEphemeral({ 
             channel: channel, 
@@ -109,7 +106,7 @@ exports.eventCreate = function(message, channel, userId){
     }
     
 }
-
+//send a message to event if the event cloud be created
 exports.createEventOut = function(event){
     console.log(event);
     var dateString = event.date;
@@ -118,7 +115,7 @@ exports.createEventOut = function(event){
     if(event.endTime != undefined) string += "-"+event.endTime;
     if(event.tag != undefined) string += " - tag:"+event.tag;
     string += "\n"+event.description;
-    if(event.link != undefined) string += "\nTo subscribe to this event please klick <"+event.link+"|here>";
+    if(event.link != undefined && eventList[a].link != "") string += "\nTo subscribe to this event please klick <"+event.link+"|here>";
     var arr =[];
     arr.push(interCompo.dropdownAtta(
         string, "", "", null
@@ -156,14 +153,12 @@ function eventCreateAttachments(){
     array.push(interCompo.confirmButtonAtta(
         "You created the event '"+event.title+"' at the "+event.date+". \nWould you like to save the event?", "save_edit_delete_buttons"
     ));
-    //console.log(array);
 
     return array;
 }
 
 //return the time array for dropdown
 function createTimeArray(){
-    //console.log("createTimeArray");
     var timeArray = [];
     for(var i = 8; i <= 20; i++){
         for(var a = 0; a <= 3; a++){
@@ -213,8 +208,7 @@ function createEvent(message){
 
 //send repuest with delete tags
 exports.deleteEvent = function(message, channelId, userId){
-    //console.log("tags delete");
-    var split = message.split("<@UE743CUJZ> event delete");
+    var split = message.split("event delete");
 
     var id = "";
     event.forEach(ev => {
