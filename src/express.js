@@ -1,3 +1,5 @@
+//the conection to the interactive components is not working
+
 // Import dependencies
 const { createMessageAdapter } = require('@slack/interactive-messages');
 const express = require('express');

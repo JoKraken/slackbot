@@ -9,7 +9,6 @@ var tags = [];
 
 //send post request to server for create a tag
 exports.addTags = function(message, channelId, userId){
-    //console.log("tags add");
     var split = message.split("<@UE743CUJZ> tags add ");
 
     temp[0] = {channel: channelId, user: userId};
@@ -29,12 +28,10 @@ exports.addTagsOut = function(body){
 
 //send repuest with delete tags
 exports.deleteTags = function(message, channelId, userId){
-    //console.log("tags delete");
     var split = message.split("<@UE743CUJZ> tags delete ");
 
     var id = "";
     tags.forEach(tag => {
-        console.log(tag);
         if(tag.name == split[1]){
             id = tag._id;
         }
@@ -59,14 +56,12 @@ exports.deleteTagsOut = function(){
 
 //send repuest with get tags
 exports.getTags = function(message, channelId, userId){
-    //console.log("message tags");
     temp[0] = {channel: channelId, user: userId};
     request.get("tags", 2);
 }
 
 //give out the tags 
 exports.getTagsOut = function(body){
-    console.log("getTagsOut");
     var string = "";
 
     var id = 0;
@@ -97,7 +92,6 @@ exports.getTagsOut = function(body){
 
 //return an array with tags inside
 exports.getTagArray = function(){
-    //console.log("getTagArray");
     var arr = [];
 
     tags.forEach(tag => {

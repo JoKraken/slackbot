@@ -8,7 +8,6 @@ var guidelines = [];
 
 //send post request to server for create a guideline
 exports.addguidelines = function(message, channelId, userId){
-    console.log("guidelines add");
     var split = message.split("<@UE743CUJZ> guidelines add ");
     var elements = split[1].split("; ");
     
@@ -30,17 +29,14 @@ exports.addGuidelineOut = function(body){
 
 //send delete request to server for delete a guideline
 exports.deleteguidelines = function(message, channelId, userId){
-    //console.log("guidelines delete");
     var split = message.split(" guidelines delete ");
 
     var id = "";
     guidelines.forEach(guidline => {
-        console.log(guidline);
         if(guidline.title == split[1]){
             id = guidline._id;
         }
     });
-    console.log("id: "+id);
 
     if(id == ""){
         slack.web.chat.postEphemeral({
@@ -62,14 +58,12 @@ exports.deleteGuidelinesOut = function(){
 
 //send get request to server for get guidelines
 exports.getguidelines = function(message, channelId, userId){
-    //console.log("message guidelines");
     temp[0] = {channel: channelId, user: userId};
     request.get("guidelines", 3);
 }
 
 //send message with the guidelines
 exports.getGuidelinesOut = function(body){
-    //console.log("getguidelinesString");
     var string = "";
     var id = 1;
     guidelines = body;

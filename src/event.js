@@ -12,7 +12,8 @@ exports.eventCreateInfo = function(channelId, userId){
     //("message event create info");
     slack.web.chat.postEphemeral({
         channel: channelId, user:userId, text:"Create an event: \nTo create an event please use the following format:\n"+
-        "<@UE743CUJZ> event [dd.mm.yyy] [start time:hh:mm]-[end time:hh:mm]; [title]; [description](; [tag])(; [subscrip link])\n"
+        "<@UE743CUJZ> event [dd.mm.yyy] [start time: hh:mm]-[end time: hh:mm]; [title]; [description](; [tag])(; [subscrip link])\n\n"+
+        "If you want to delete an event please use: <@UE743CUJZ> event delete [title]"
     });
 }
 
@@ -113,9 +114,9 @@ exports.createEventOut = function(event){
     var string = "*"+dateString+" "+event.title+"*\n";
     if(event.startTime != undefined) string += event.startTime;
     if(event.endTime != undefined) string += "-"+event.endTime;
-    if(event.tag != undefined) string += " - tag:"+event.tag;
+    if(event.tag != undefined && event.tag != "") string += " - tag:"+event.tag;
     string += "\n"+event.description;
-    if(event.link != undefined && eventList[a].link != "") string += "\nTo subscribe to this event please klick <"+event.link+"|here>";
+    if(event.link != undefined && event.link != "") string += "\nTo subscribe to this event please klick <"+event.link+"|here>";
     var arr =[];
     arr.push(interCompo.dropdownAtta(
         string, "", "", null
@@ -179,14 +180,18 @@ function createEvent(message){
     var split = message.split(" event ");
     var arr = split[1].split(";");
     if(arr.length >= 3){
-        var link = arr[4].split("<");
-        var link = link[1].split("|");
         var body = {
             'title': arr[1],
             'description': arr[2],
-            'tag': arr[3],
-            'link': link[0]
+            'tag': arr[3]
         };
+        if(arr[4] != undefined){
+            var link = arr[4].split("<");
+            var link = link[1].split("|");
+            body["link"] = link[0];
+        }else{
+            body["link"] = "";
+        }
         var date = arr[0].split(" ");
         if(date.length == 1){
             body["date"] = arr[0];
@@ -209,10 +214,12 @@ function createEvent(message){
 //send repuest with delete tags
 exports.deleteEvent = function(message, channelId, userId){
     var split = message.split("event delete");
+    var split2 = message.split("event delete ");
 
     var id = "";
     event.forEach(ev => {
-        if(ev.title == split[1]){
+        console.log(ev);
+        if(ev.title == split[1] || ev.title == split2[1]){
             id = ev._id;
         }
     });
